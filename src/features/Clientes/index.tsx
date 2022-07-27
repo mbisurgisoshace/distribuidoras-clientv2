@@ -6,12 +6,13 @@ import ClientesService from '../../services/ClientesService';
 
 export default function Clientes() {
   const [clientes, setClientes] = useState<any[]>([]);
+  const [isLoadingClientes, setIsLoadingClientes] = useState(true);
 
   useEffect(() => {
     const getClientes = async () => {
       const clientes = await ClientesService.getClientes();
-      console.log('clientes', clientes);
       setClientes(clientes);
+      setIsLoadingClientes(false);
     };
 
     getClientes();
@@ -19,7 +20,7 @@ export default function Clientes() {
 
   return (
     <OuterWrapper>
-      <TablaClientes data={clientes} />
+      <TablaClientes data={clientes} isLoading={isLoadingClientes} />
     </OuterWrapper>
   );
 }

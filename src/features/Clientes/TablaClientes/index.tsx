@@ -5,19 +5,23 @@ import {
   getCoreRowModel,
   getPaginationRowModel,
 } from '@tanstack/react-table';
+
 import { CloudIcon, PlusIcon } from '@heroicons/react/outline';
 
+import DataCell from './Cells/DataCell';
+import HeaderCell from './Cells/HeaderCell';
 import { useClienteColumns } from './useClienteColumns';
 import Pagination from '../../../components/Table/Pagination';
-import HeaderCell from './Cells/HeaderCell';
-import DataCell from './Cells/DataCell';
+import LoadingData from '../../../components/Table/LoadingData';
 
 interface TablaClientesProps {
   data: any;
+  isLoading: boolean;
 }
 
 export default function TablaClientes({
   data,
+  isLoading,
 }: TablaClientesProps): React.ReactElement {
   const { columns } = useClienteColumns();
 
@@ -66,7 +70,8 @@ export default function TablaClientes({
         </div>
       </div>
       <div className="flex flex-col h-full mt-8 overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:-mx-6 md:mx-0 md:rounded-lg">
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto relative">
+          {isLoading && <LoadingData />}
           <table className="min-w-full divide-y divide-gray-300">
             <thead className="bg-gray-50">
               {table.getHeaderGroups().map((headerGroup) => (

@@ -1,5 +1,4 @@
-import React, { Fragment, useState } from 'react';
-import { Dialog, Transition } from '@headlessui/react';
+import React, { useState } from 'react';
 
 import { MenuIcon } from '@heroicons/react/outline';
 import Sidebar from './Sidebar/Sidebar';
