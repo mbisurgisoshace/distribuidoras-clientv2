@@ -14,7 +14,7 @@ export default function OuterWrapper({
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div>
+    <div className="h-full">
       <Sidebar
         sidebarOpen={sidebarOpen}
         closeSidebar={() => setSidebarOpen(false)}

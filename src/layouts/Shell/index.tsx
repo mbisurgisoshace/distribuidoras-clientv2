@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import Home from '../../features/Home';
 import Login from '../../features/Auth/Login';
+import Clientes from '../../features/Clientes';
+
 import { RequireAuth } from '../../features/Auth/ProtectedRoute';
 
 export default function Shell() {
@@ -14,6 +16,14 @@ export default function Shell() {
           element={
             <RequireAuth>
               <Home />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/clientes"
+          element={
+            <RequireAuth>
+              <Clientes />
             </RequireAuth>
           }
         />

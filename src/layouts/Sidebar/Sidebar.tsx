@@ -1,7 +1,9 @@
 import React, { Fragment } from 'react';
-import { Dialog, Transition, Disclosure } from '@headlessui/react';
+import { useLocation } from 'react-router-dom';
+import { Dialog, Transition } from '@headlessui/react';
 import {
   XIcon,
+  HomeIcon,
   TableIcon,
   ChartBarIcon,
   ArchiveIcon,
@@ -22,14 +24,21 @@ export default function Sidebar({
   closeSidebar,
 }: SidebarProps): React.ReactElement {
   const auth = useAuth();
+  const location = useLocation();
 
   const navigation: any[] = [
     {
+      name: 'Home',
+      icon: HomeIcon,
+      current: location.pathname === '/',
+      href: '/',
+    },
+    {
       name: 'Tablas',
       icon: TableIcon,
-      current: true,
+      current: location.pathname === '/clientes',
       children: [
-        { name: 'Clientes', href: '#' },
+        { name: 'Clientes', href: '/clientes' },
         { name: 'Precios', href: '#' },
         { name: 'Feriados', href: '#' },
       ],

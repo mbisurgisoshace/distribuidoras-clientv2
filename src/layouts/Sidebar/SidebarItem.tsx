@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Disclosure } from '@headlessui/react';
 
 import { classNames } from '../utils';
@@ -24,9 +25,9 @@ export default function SidebarItem({
   item,
 }: SidebarItemProps): React.ReactElement {
   return !item.children ? (
-    <a
+    <Link
       key={item.name}
-      href={item.href}
+      to={item.href as string}
       className={classNames(
         item.current
           ? 'bg-gray-100 text-gray-900'
@@ -44,7 +45,7 @@ export default function SidebarItem({
         aria-hidden="true"
       />
       {item.name}
-    </a>
+    </Link>
   ) : (
     <Disclosure as="div" key={item.name} className="space-y-1">
       {({ open }) => (
@@ -78,10 +79,10 @@ export default function SidebarItem({
               <Disclosure.Button
                 key={subItem.name}
                 as="a"
-                href={subItem.href}
+                //href={subItem.href}
                 className="group w-full flex items-center pl-11 pr-2 py-2 text-sm font-medium text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-50"
               >
-                {subItem.name}
+                <Link to={subItem.href}>{subItem.name}</Link>
               </Disclosure.Button>
             ))}
           </Disclosure.Panel>

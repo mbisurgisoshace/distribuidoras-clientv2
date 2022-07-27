@@ -4,7 +4,7 @@ import { LockClosedIcon } from '@heroicons/react/solid';
 
 import { useAuth } from '../AuthProvider';
 
-export default function Login() {
+export default function Login(): React.ReactElement {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
