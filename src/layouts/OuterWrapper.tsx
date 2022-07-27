@@ -19,7 +19,7 @@ export default function OuterWrapper({
         sidebarOpen={sidebarOpen}
         closeSidebar={() => setSidebarOpen(false)}
       />
-      <div className="md:pl-64 flex flex-col flex-1">
+      <div className="h-full md:pl-64 flex flex-col flex-1">
         <div className="sticky top-0 z-10 md:hidden pl-1 pt-1 sm:pl-3 sm:pt-3 bg-gray-100">
           <button
             type="button"
@@ -30,9 +30,9 @@ export default function OuterWrapper({
             <MenuIcon className="h-6 w-6" aria-hidden="true" />
           </button>
         </div>
-        <main className="flex-1">
-          <div className="py-6">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+        <main className="h-full flex-1">
+          <div className="py-6 h-full">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 h-full">
               {children}
             </div>
           </div>
