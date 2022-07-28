@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   flexRender,
   useReactTable,
+  PaginationState,
   getCoreRowModel,
-  getPaginationRowModel,
 } from '@tanstack/react-table';
 
 import { CloudIcon, PlusIcon } from '@heroicons/react/outline';
@@ -16,25 +16,47 @@ import LoadingData from '../../../components/Table/LoadingData';
 
 interface TablaClientesProps {
   data: any;
+  total: number;
   isLoading: boolean;
+  onPageChange: (currentPage: number) => void;
 }
 
 export default function TablaClientes({
   data,
+  total,
   isLoading,
+  onPageChange,
 }: TablaClientesProps): React.ReactElement {
   const { columns } = useClienteColumns();
+
+  const [{ pageIndex, pageSize }, setPagination] =
+    React.useState<PaginationState>({
+      pageIndex: 0,
+      pageSize: 50,
+    });
+
+  const pagination = React.useMemo(
+    () => ({
+      pageIndex,
+      pageSize,
+    }),
+    [pageIndex, pageSize]
+  );
+
+  useEffect(() => {
+    onPageChange(pageIndex + 1);
+  }, [pageIndex]);
 
   const table = useReactTable({
     data,
     columns,
-    initialState: {
-      pagination: {
-        pageSize: 50,
-      },
+    pageCount: -1,
+    state: {
+      pagination,
     },
+    onPaginationChange: setPagination,
+    manualPagination: true,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
   });
 
   return (
@@ -112,7 +134,7 @@ export default function TablaClientes({
         <Pagination
           pageSize={50}
           siblingsCount={1}
-          totalCount={data.length}
+          totalCount={total}
           onNextPage={table.nextPage}
           onPreviousPage={table.previousPage}
           currentPage={table.getState().pagination.pageIndex + 1}
