@@ -6,6 +6,7 @@ import Login from '../../features/Auth/Login';
 import Clientes from '../../features/Clientes';
 
 import { RequireAuth } from '../../features/Auth/ProtectedRoute';
+import FormCliente from '../../features/Clientes/FormCliente';
 
 export default function Shell() {
   return (
@@ -24,6 +25,14 @@ export default function Shell() {
           element={
             <RequireAuth>
               <Clientes />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/clientes/:clienteId"
+          element={
+            <RequireAuth>
+              <FormCliente />
             </RequireAuth>
           }
         />

@@ -46,7 +46,7 @@ export const useClienteColumns = () => {
         cell: (props) => (
           <Link
             className="text-indigo-600 hover:text-indigo-900"
-            to={`clientes/${props.row.original.cliente_id}`}
+            to={`/clientes/${props.row.original.cliente_id}`}
           >
             Editar
           </Link>

@@ -1,19 +1,27 @@
 import BaseService from './baseService';
+import { ICliente } from '../types/Cliente';
 
 export default class ClientesService extends BaseService {
   static clientesRoute = '/clientes';
+  static clienteRoute = '/clientes/{cliente_id}';
   static searchClientesRoute = '/clientes/filter';
 
-  public static async getClientes(): Promise<Array<any>> {
-    return await this.getRequest<Array<any>>(this.clientesRoute);
+  public static async getClientes(): Promise<Array<ICliente>> {
+    return await this.getRequest<Array<ICliente>>(this.clientesRoute);
+  }
+
+  public static async getCliente(id: number): Promise<ICliente> {
+    return await this.getRequest<ICliente>(
+      this.buildRoute(this.clienteRoute, { cliente_id: id })
+    );
   }
 
   public static async searchClientes(
     filterText: string,
     pageSize: number,
     currentPage: number
-  ): Promise<Array<any>> {
-    return await this.postJSONRequest<any, Array<any>>(
+  ): Promise<Array<ICliente>> {
+    return await this.postJSONRequest<any, Array<ICliente>>(
       this.searchClientesRoute,
       {
         filterText,
