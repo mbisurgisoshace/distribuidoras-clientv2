@@ -13,12 +13,14 @@ import HeaderCell from './Cells/HeaderCell';
 import { useClienteColumns } from './useClienteColumns';
 import Pagination from '../../../components/Table/Pagination';
 import LoadingData from '../../../components/Table/LoadingData';
+import FilterClientes from './FilterClientes';
 
 interface TablaClientesProps {
   data: any;
   total: number;
   isLoading: boolean;
   onPageChange: (currentPage: number) => void;
+  onFilterApply: (filterText: string) => void;
 }
 
 export default function TablaClientes({
@@ -26,6 +28,7 @@ export default function TablaClientes({
   total,
   isLoading,
   onPageChange,
+  onFilterApply,
 }: TablaClientesProps): React.ReactElement {
   const { columns } = useClienteColumns();
 
@@ -91,6 +94,12 @@ export default function TablaClientes({
           </span>
         </div>
       </div>
+      <FilterClientes
+        onApplyFilter={(filterValue) => {
+          onFilterApply(filterValue);
+          table.resetPageIndex(true);
+        }}
+      />
       <div className="flex flex-col h-full mt-8 overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:-mx-6 md:mx-0 md:rounded-lg">
         <div className="flex-1 overflow-y-auto relative">
           {isLoading && <LoadingData />}

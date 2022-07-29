@@ -9,12 +9,14 @@ export default class ClientesService extends BaseService {
   }
 
   public static async searchClientes(
+    filterText: string,
     pageSize: number,
     currentPage: number
   ): Promise<Array<any>> {
     return await this.postJSONRequest<any, Array<any>>(
       this.searchClientesRoute,
       {
+        filterText,
         pageSize,
         currentPage,
       }

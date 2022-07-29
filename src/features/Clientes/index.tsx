@@ -5,16 +5,22 @@ import OuterWrapper from '../../layouts/OuterWrapper';
 import ClientesService from '../../services/ClientesService';
 
 export default function Clientes() {
+  const [filterText, setFilterText] = useState('');
   const [clientes, setClientes] = useState<any>([]);
   const [isLoadingClientes, setIsLoadingClientes] = useState(false);
 
   useEffect(() => {
-    getClientes(50, 1);
+    getClientes('', 50, 1);
   }, []);
 
-  const getClientes = async (pageSize: number, currentPage: number) => {
+  const getClientes = async (
+    filterText: string,
+    pageSize: number,
+    currentPage: number
+  ) => {
     setIsLoadingClientes(true);
     const clientes = await ClientesService.searchClientes(
+      filterText,
       pageSize,
       currentPage
     );
@@ -28,7 +34,11 @@ export default function Clientes() {
         total={clientes.total || 0}
         isLoading={isLoadingClientes}
         data={clientes.clientes || []}
-        onPageChange={(currentPage) => getClientes(50, currentPage)}
+        onFilterApply={(filterValue) => {
+          setFilterText(filterValue);
+          getClientes(filterValue, 50, 1);
+        }}
+        onPageChange={(currentPage) => getClientes(filterText, 50, currentPage)}
       />
     </OuterWrapper>
   );
