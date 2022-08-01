@@ -50,6 +50,36 @@ export default function Form({
     setCliente(cliente);
   };
 
+  const onLocationChanged = (
+    lat: number,
+    lng: number,
+    calle?: string,
+    altura?: string,
+    localidad?: string,
+    cp?: string,
+    provincia?: string
+  ) => {
+    if (calle) {
+      cliente.calle = calle;
+    }
+
+    if (altura) {
+      cliente.altura = altura;
+    }
+
+    if (localidad) {
+      cliente.localidad = localidad;
+    }
+
+    if (cp) {
+      cliente.codigo_postal = cp;
+    }
+
+    setCliente({
+      ...cliente,
+    });
+  };
+
   return (
     <form
       className={`${!show ? 'hidden' : 'block'} mt-3.5 space-y-6`}
@@ -57,6 +87,7 @@ export default function Form({
     >
       <InformacionGeneral
         cliente={cliente}
+        onLocationChanged={onLocationChanged}
         onChangeClienteField={(field, value) =>
           setCliente({ ...cliente, [field]: value })
         }

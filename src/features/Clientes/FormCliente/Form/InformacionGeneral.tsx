@@ -1,14 +1,25 @@
 import React from 'react';
 
 import { ICliente } from '../../../../types/Cliente';
+import ClienteMap from './ClienteMap';
 
 interface InformacionGeneralProps {
   cliente: ICliente;
+  onLocationChanged: (
+    lat: number,
+    lng: number,
+    calle?: string,
+    altura?: string,
+    localidad?: string,
+    cp?: string,
+    provincia?: string
+  ) => void;
   onChangeClienteField: (field: string, value: any) => void;
 }
 
 export default function InformacionGeneral({
   cliente,
+  onLocationChanged,
   onChangeClienteField,
 }: InformacionGeneralProps): React.ReactElement {
   return (
@@ -57,6 +68,13 @@ export default function InformacionGeneral({
                   onChangeClienteField('telefono', e.target.value)
                 }
                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+              />
+            </div>
+            <div className="col-span-6">
+              <ClienteMap
+                lat={cliente.latitud}
+                lng={cliente.longitud}
+                onLocationChanged={onLocationChanged}
               />
             </div>
             <div className="col-span-6">
@@ -131,6 +149,46 @@ export default function InformacionGeneral({
                   onChangeClienteField('codigo_postal', e.target.value)
                 }
                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+              />
+            </div>
+            <div className="col-span-6 sm:col-span-3">
+              <label
+                htmlFor="latitud"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Latitud
+              </label>
+              <input
+                type="text"
+                name="latitud"
+                id="latitud"
+                disabled
+                value={cliente.latitud || ''}
+                autoComplete="latitud"
+                onChange={(e) =>
+                  onChangeClienteField('latitud', e.target.value)
+                }
+                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md bg-gray-50"
+              />
+            </div>
+            <div className="col-span-6 sm:col-span-3">
+              <label
+                htmlFor="longitud"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Longitud
+              </label>
+              <input
+                type="text"
+                name="longitud"
+                id="longitud"
+                disabled
+                value={cliente.longitud || ''}
+                autoComplete="longitud"
+                onChange={(e) =>
+                  onChangeClienteField('longitud', e.target.value)
+                }
+                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md bg-gray-50"
               />
             </div>
             <div className="col-span-6 sm:col-span-3">
