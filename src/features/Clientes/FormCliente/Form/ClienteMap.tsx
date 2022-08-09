@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react';
-import { DivIcon } from 'leaflet';
+import React, { useRef, useMemo, useState, useEffect } from 'react';
+import { DivIcon, Marker as IMarker } from 'leaflet';
 import * as geocoder from 'esri-leaflet-geocoder';
 import { useMap, MapContainer, TileLayer, Marker } from 'react-leaflet';
 import { GeoSearchControl, EsriProvider } from 'leaflet-geosearch';
 
 import './styles.css';
-import { MailOpenIcon } from '@heroicons/react/outline';
 
 interface ClienteMapProps {
   lat: number;
@@ -32,11 +31,11 @@ export default function ClienteMap({
     // @ts-ignore
     const searchControl = new GeoSearchControl({
       provider: new EsriProvider(),
-      showMarker: true,
-      //   marker: {
-      //     icon: new DivIcon({ className: 'clienteMarker' }),
-      //     draggable: true,
-      //   },
+      showMarker: false,
+      marker: {
+        icon: new DivIcon({ className: 'clienteMarker' }),
+        draggable: true,
+      },
       style: 'bar',
       autoClose: true,
       keepResult: true,
@@ -47,8 +46,6 @@ export default function ClienteMap({
       const lat = e.location.y;
       const lng = e.location.x;
 
-      onLocationChanged(lat, lng);
-
       (geocoder as any)
         .geocode({
           apikey: process.env.REACT_APP_ARCGIS_API_KEY,
@@ -56,6 +53,7 @@ export default function ClienteMap({
         .text(e.location.label)
         .run((err: any, res: any, response: any) => {
           if (err) {
+            onLocationChanged(lat, lng);
             return;
           }
 
@@ -63,27 +61,58 @@ export default function ClienteMap({
           if (results) {
             const { StName, AddNum, Nbrhd, Postal, Region } =
               results[0].properties;
-            onLocationChanged(lat, lng, StName, AddNum, Nbrhd, Postal, Region);
+
+            return onLocationChanged(
+              lat,
+              lng,
+              StName,
+              AddNum,
+              Nbrhd,
+              Postal,
+              Region
+            );
           }
         });
     };
 
-    const onMarkerMoved = (e: any) => {
-      console.log('e', e);
-    };
-
     // @ts-ignore
     useEffect(() => {
-      if (lat && lng) {
-        map.flyTo({ lat, lng });
-      }
       map.addControl(searchControl);
       map.on('geosearch/showlocation', onLocationFound);
-      map.on('geosearch/marker/dragend', onMarkerMoved);
       return () => map.removeControl(searchControl);
     }, []);
 
     return null;
+  };
+
+  const DraggableMarker = ({ lat, lng }: { lat: number; lng: number }) => {
+    const map = useMap();
+    const markerRef = useRef<IMarker>(null);
+
+    const eventHandlers = useMemo(
+      () => ({
+        dragend() {
+          const marker = markerRef.current;
+          if (marker) {
+            const { lat, lng } = marker.getLatLng();
+            onLocationChanged(lat, lng);
+          }
+        },
+      }),
+      []
+    );
+
+    map.flyTo([lat, lng], 17, { animate: false });
+
+    return (
+      <Marker
+        draggable
+        eventHandlers={eventHandlers}
+        position={{ lat, lng }}
+        ref={markerRef}
+        icon={new DivIcon({ className: 'clienteMarker' })}
+      />
+    );
   };
 
   return (
@@ -93,8 +122,8 @@ export default function ClienteMap({
         zoomControl={false}
         style={{ width: '100%', height: '100%' }}
         center={[
-          parseFloat(process.env.REACT_APP_LATITUDE || ''),
-          parseFloat(process.env.REACT_APP_LONGITUDE || ''),
+          lat || parseFloat(process.env.REACT_APP_LATITUDE || ''),
+          lng || parseFloat(process.env.REACT_APP_LONGITUDE || ''),
         ]}
       >
         <SearchField />
@@ -102,13 +131,7 @@ export default function ClienteMap({
           url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
-        {lat && lng && (
-          <Marker
-            draggable
-            icon={new DivIcon({ className: 'clienteMarker' })}
-            position={[lat, lng]}
-          />
-        )}
+        {lat && lng && <DraggableMarker lat={lat} lng={lng} />}
       </MapContainer>
     </div>
   );

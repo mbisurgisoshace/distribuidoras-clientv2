@@ -61,6 +61,14 @@ export const useClienteForm = (clienteId: any) => {
     cp?: string,
     provincia?: string
   ) => {
+    if (lat) {
+      cliente.latitud = lat;
+    }
+
+    if (lng) {
+      cliente.longitud = lng;
+    }
+
     if (calle) {
       cliente.calle = calle;
     }

@@ -109,7 +109,7 @@ export default function InformacionGeneral({
 }: InformacionGeneralProps): React.ReactElement {
   const renderFields = () => {
     return FIELDS.map((field) => (
-      <div className={field.className}>
+      <div className={field.className} key={field.id}>
         {field.type === 'map' && (
           <ClienteMap
             lat={cliente.latitud}
