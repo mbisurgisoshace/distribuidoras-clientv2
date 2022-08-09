@@ -16,6 +16,16 @@ export default class ClientesService extends BaseService {
     );
   }
 
+  public static async updateCliente(
+    id: number,
+    cliente: ICliente
+  ): Promise<void> {
+    return await this.putJSONRequest(
+      this.buildRoute(this.clienteRoute, { cliente_id: id }),
+      cliente
+    );
+  }
+
   public static async searchClientes(
     filterText: string,
     pageSize: number,

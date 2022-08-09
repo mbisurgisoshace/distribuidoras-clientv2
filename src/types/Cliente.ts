@@ -5,6 +5,8 @@ export interface ICliente {
   cuit: string;
   calle: string;
   altura: string;
+  piso: string;
+  depto: string;
   localidad: string;
   codigo_postal: string;
   entre: string;

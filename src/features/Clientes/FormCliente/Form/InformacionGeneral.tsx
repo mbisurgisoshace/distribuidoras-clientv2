@@ -111,8 +111,41 @@ export default function InformacionGeneral({
                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
               />
             </div>
-
-            <div className="col-span-6 sm:col-span-3 lg:col-span-2">
+            <div className="col-span-6 sm:col-span-6 lg:col-span-2">
+              <label
+                htmlFor="piso"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Piso
+              </label>
+              <input
+                type="text"
+                name="piso"
+                id="piso"
+                value={cliente.piso || ''}
+                autoComplete="piso"
+                onChange={(e) => onChangeClienteField('piso', e.target.value)}
+                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+              />
+            </div>
+            <div className="col-span-6 sm:col-span-6 lg:col-span-2">
+              <label
+                htmlFor="depto"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Depto
+              </label>
+              <input
+                type="text"
+                name="depto"
+                id="depto"
+                value={cliente.depto || ''}
+                autoComplete="depto"
+                onChange={(e) => onChangeClienteField('depto', e.target.value)}
+                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+              />
+            </div>
+            <div className="col-span-6 sm:col-span-4">
               <label
                 htmlFor="localidad"
                 className="block text-sm font-medium text-gray-700"
@@ -132,7 +165,7 @@ export default function InformacionGeneral({
               />
             </div>
 
-            <div className="col-span-6 sm:col-span-3 lg:col-span-2">
+            <div className="col-span-6 sm:col-span-2">
               <label
                 htmlFor="codigo_postal"
                 className="block text-sm font-medium text-gray-700"
@@ -148,6 +181,40 @@ export default function InformacionGeneral({
                 onChange={(e) =>
                   onChangeClienteField('codigo_postal', e.target.value)
                 }
+                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+              />
+            </div>
+            <div className="col-span-6 sm:col-span-3">
+              <label
+                htmlFor="entre"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Entre
+              </label>
+              <input
+                type="text"
+                name="entre"
+                id="entre"
+                value={cliente.entre || ''}
+                autoComplete="entre"
+                onChange={(e) => onChangeClienteField('entre', e.target.value)}
+                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+              />
+            </div>
+            <div className="col-span-6 sm:col-span-3">
+              <label
+                htmlFor="y"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Y
+              </label>
+              <input
+                type="text"
+                name="y"
+                id="y"
+                value={cliente.y || ''}
+                autoComplete="y"
+                onChange={(e) => onChangeClienteField('y', e.target.value)}
                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
               />
             </div>
@@ -189,40 +256,6 @@ export default function InformacionGeneral({
                   onChangeClienteField('longitud', e.target.value)
                 }
                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md bg-gray-50"
-              />
-            </div>
-            <div className="col-span-6 sm:col-span-3">
-              <label
-                htmlFor="entre"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Entre
-              </label>
-              <input
-                type="text"
-                name="entre"
-                id="entre"
-                value={cliente.entre || ''}
-                autoComplete="entre"
-                onChange={(e) => onChangeClienteField('entre', e.target.value)}
-                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-              />
-            </div>
-            <div className="col-span-6 sm:col-span-3">
-              <label
-                htmlFor="y"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Y
-              </label>
-              <input
-                type="text"
-                name="y"
-                id="y"
-                value={cliente.y || ''}
-                autoComplete="y"
-                onChange={(e) => onChangeClienteField('y', e.target.value)}
-                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
               />
             </div>
             <div className="col-span-6">
