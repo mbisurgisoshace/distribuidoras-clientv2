@@ -20,10 +20,6 @@ export default function InformacionComercial({
   const [condicionesVenta, setCondicionesVenta] = useState<any[]>([]);
 
   useEffect(() => {
-    // getCanales();
-    // getSubcanales();
-    // getListasPrecio();
-    // getCondicionesVenta();
     getData();
   }, []);
 
@@ -37,27 +33,6 @@ export default function InformacionComercial({
     setCanales(canales);
     setSubcanales(subcanales);
     setListasPrecio(listasPrecio);
-    setCondicionesVenta(condicionesVenta);
-  };
-
-  const getCanales = async () => {
-    const canales = await CanalesService.getCanales();
-    setCanales(canales);
-  };
-
-  const getSubcanales = async () => {
-    const subcanales = await CanalesService.getSubcanales();
-    setSubcanales(subcanales);
-  };
-
-  const getListasPrecio = async () => {
-    const listasPrecio = await PrecioService.getListasPrecio();
-    setListasPrecio(listasPrecio);
-  };
-
-  const getCondicionesVenta = async () => {
-    const condicionesVenta =
-      await CondicionesVentaService.getCondicionesVenta();
     setCondicionesVenta(condicionesVenta);
   };
 

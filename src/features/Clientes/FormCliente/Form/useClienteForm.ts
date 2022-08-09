@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 import { ICliente } from '../../../../types/Cliente';
 import ClientesService from '../../../../services/ClientesService';
@@ -31,13 +31,16 @@ export const useClienteForm = (clienteId: any) => {
   const [isLoading, setIsLoading] = useState(false);
   const [cliente, setCliente] = useState<ICliente>(initData);
 
-  const isCliente = () => clienteId && !isNaN(parseInt(clienteId));
+  const isCliente = useCallback(
+    () => clienteId && !isNaN(parseInt(clienteId)),
+    [clienteId]
+  );
 
   useEffect(() => {
     if (isCliente()) {
       getCliente(parseInt(clienteId));
     }
-  }, [clienteId]);
+  }, [isCliente, clienteId]);
 
   const getCliente = async (clienteId: number) => {
     const cliente = await ClientesService.getCliente(clienteId);
