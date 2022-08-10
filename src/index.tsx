@@ -11,6 +11,8 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <div id="notification-container">
+      <App />
+    </div>
   </React.StrictMode>
 );

@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 
 import { ICliente } from '../../../../types/Cliente';
 import ClientesService from '../../../../services/ClientesService';
+import toaster from '../../../../components/Toast/toaster';
 
 const initData: ICliente = {
   razon_social: '',
@@ -97,11 +98,18 @@ export const useClienteForm = (clienteId: any) => {
     try {
       if (isCliente()) {
         await ClientesService.updateCliente(clienteId, cliente);
+        toaster().success({
+          title: 'Actualizado correctamente!',
+          infoText: 'El cliente fue actualizado correctamente.',
+        });
       } else {
         console.log('newCliente');
       }
     } catch (err: any) {
-      console.log('err', err);
+      toaster().error({
+        title: 'Ha ocurrido un error!',
+        infoText: err,
+      });
     }
 
     setIsLoading(false);

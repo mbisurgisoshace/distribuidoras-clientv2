@@ -1,4 +1,4 @@
-import React, { useRef, useMemo, useState, useEffect } from 'react';
+import React, { useRef, useMemo, useEffect } from 'react';
 import { DivIcon, Marker as IMarker } from 'leaflet';
 import * as geocoder from 'esri-leaflet-geocoder';
 import { useMap, MapContainer, TileLayer, Marker } from 'react-leaflet';
@@ -120,7 +120,7 @@ export default function ClienteMap({
       <MapContainer
         zoom={17}
         zoomControl={false}
-        style={{ width: '100%', height: '100%' }}
+        style={{ width: '100%', height: '100%', zIndex: 1 }}
         center={[
           lat || parseFloat(process.env.REACT_APP_LATITUDE || ''),
           lng || parseFloat(process.env.REACT_APP_LONGITUDE || ''),
