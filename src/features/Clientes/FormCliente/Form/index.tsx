@@ -24,7 +24,9 @@ export default function Form({
 
   return (
     <form
-      className={`${!show ? 'hidden' : 'block'} mt-3.5 pb-3.5 space-y-6`}
+      className={`${
+        !show ? 'hidden' : 'block'
+      } mt-0 sm:mt-3.5 pb-3.5 space-y-6`}
       onSubmit={onSubmit}
     >
       <InformacionGeneral
@@ -53,7 +55,7 @@ export default function Form({
           disabled={isLoading}
           className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
-          Save
+          Guardar
         </button>
       </div>
     </form>

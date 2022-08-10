@@ -30,7 +30,7 @@ export default function OuterWrapper({
           </button>
         </div>
         <main className="h-full flex-1">
-          <div className="py-6 h-full">
+          <div className="py-1 sm:py-6 h-full">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 h-full">
               {children}
             </div>
