@@ -1,5 +1,6 @@
 import React from 'react';
-import { render, createPortal } from 'react-dom';
+import { createPortal } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/outline';
 
 import Toast from './index';
@@ -15,7 +16,7 @@ export default function toaster() {
   ) as HTMLDivElement;
 
   const success = (config: ToasterProps) => {
-    render(
+    createRoot(document.createElement('div')).render(
       createPortal(
         <Toast
           icon={
@@ -28,13 +29,12 @@ export default function toaster() {
           infoText={config.infoText}
         />,
         notificationWrapper
-      ),
-      document.createElement('div')
+      )
     );
   };
 
   const error = (config: ToasterProps) => {
-    render(
+    createRoot(document.createElement('div')).render(
       createPortal(
         <Toast
           icon={
@@ -44,8 +44,7 @@ export default function toaster() {
           infoText={config.infoText}
         />,
         notificationWrapper
-      ),
-      document.createElement('div')
+      )
     );
   };
 
