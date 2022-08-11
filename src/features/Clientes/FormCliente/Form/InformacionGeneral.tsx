@@ -1,7 +1,7 @@
 import React from 'react';
 import Input from '../../../../components/Input';
 
-import ClienteMap from './ClienteMap';
+import ClienteMap from './ClienteMap/ClienteMap';
 import { ICliente } from '../../../../types/Cliente';
 
 interface InformacionGeneralProps {
