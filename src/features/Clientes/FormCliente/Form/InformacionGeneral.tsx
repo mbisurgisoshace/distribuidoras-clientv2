@@ -192,7 +192,7 @@ export default function InformacionGeneral({
                   value: zona.zona_id,
                 }))}
                 onOptionChange={(value) => {
-                  setCurrZona(value);
+                  setCurrZona(value as number);
                   onChangeClienteField('zona_sub_id', null);
                 }}
               />

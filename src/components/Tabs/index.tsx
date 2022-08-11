@@ -1,4 +1,6 @@
 import React from 'react';
+
+import Select from '../Select';
 import { classNames } from '../../layouts/utils';
 
 interface Tab {
@@ -14,23 +16,24 @@ interface TabsProps {
 }
 
 export default function Tabs({ tabs }: TabsProps): React.ReactElement {
+  const onDropdownTabSelect = (selectedTab: string) => {
+    const findTab = tabs.find((tab) => tab.value === selectedTab);
+    if (findTab) findTab.onClick(selectedTab);
+  };
+
   return (
     <div>
       <div className="sm:hidden">
         <label htmlFor="tabs" className="sr-only">
           Seleccionar
         </label>
-        {/* Use an "onChange" listener to redirect the user to the selected tab URL. */}
-        {/* <select
+        <Select
           id="tabs"
-          name="tabs"
-          className="block w-full focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md"
-          defaultValue={tabs.find((tab) => tab.current)?.label}
-        >
-          {tabs.map((tab) => (
-            <option key={tab.name}>{tab.name}</option>
-          ))}
-        </select> */}
+          label=""
+          value={tabs.find((tab) => tab.current)?.value || -1}
+          onOptionChange={(value) => onDropdownTabSelect(value as string)}
+          options={tabs.map((tab) => ({ label: tab.label, value: tab.value }))}
+        />
       </div>
       <div className="hidden sm:block">
         <div className="border-b border-gray-200">
