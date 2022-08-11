@@ -22,7 +22,7 @@ export default function Form({
     onLocationChanged,
     onClienteFieldChanged,
   } = useClienteForm(clienteId);
-  console.log('errors', errors);
+
   return (
     <form
       className={`${

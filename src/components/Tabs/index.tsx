@@ -5,6 +5,7 @@ interface Tab {
   value: string;
   label: string;
   current: boolean;
+  disabled?: boolean;
   onClick: (tab: string) => void;
 }
 
@@ -37,12 +38,15 @@ export default function Tabs({ tabs }: TabsProps): React.ReactElement {
             {tabs.map((tab) => (
               <span
                 key={tab.label}
-                onClick={() => tab.onClick(tab.value)}
+                onClick={() => !tab.disabled && tab.onClick(tab.value)}
                 className={classNames(
                   tab.current
                     ? 'border-indigo-500 text-indigo-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
-                  'w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm cursor-pointer'
+                  'w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm cursor-pointer',
+                  tab.disabled
+                    ? 'cursor-auto hover:border-none hover:text-gray-500'
+                    : ''
                 )}
                 aria-current={tab.current ? 'page' : undefined}
               >

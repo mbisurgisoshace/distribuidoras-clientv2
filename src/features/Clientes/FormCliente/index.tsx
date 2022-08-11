@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import Form from './Form';
 import Tabs from '../../../components/Tabs';
 import OuterWrapper from '../../../layouts/OuterWrapper';
+import Visitas from './Visitas';
 
 export default function FormCliente(): React.ReactElement {
   const { clienteId } = useParams();
@@ -21,14 +22,23 @@ export default function FormCliente(): React.ReactElement {
               onClick: (tab) => setView(tab),
             },
             {
+              value: 'visitas',
+              label: 'Visitas',
+              disabled: isNaN(parseInt(clienteId as string)),
+              current: view === 'visitas',
+              onClick: (tab) => setView(tab),
+            },
+            {
               value: 'pedidos',
               label: 'Pedidos',
+              disabled: isNaN(parseInt(clienteId as string)),
               current: view === 'pedidos',
               onClick: (tab) => setView(tab),
             },
             {
               value: 'comodatos',
               label: 'Comodatos',
+              disabled: isNaN(parseInt(clienteId as string)),
               current: view === 'comodatos',
               onClick: (tab) => setView(tab),
             },
@@ -36,6 +46,7 @@ export default function FormCliente(): React.ReactElement {
         />
       </>
       <Form show={view === 'general'} clienteId={clienteId} />
+      <Visitas show={view === 'visitas'} clienteId={clienteId} />
     </OuterWrapper>
   );
 }
