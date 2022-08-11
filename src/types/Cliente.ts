@@ -13,7 +13,6 @@ export interface ICliente {
   y: string;
   latitud: number;
   longitud: number;
-  zona_id: number | null;
   zona_sub_id: number | null;
   canal_id: number | null;
   subcanal_id: number | null;

@@ -1,8 +1,10 @@
-import React from 'react';
-import Input from '../../../../components/Input';
+import React, { useState, useEffect } from 'react';
 
+import Input from '../../../../components/Input';
 import ClienteMap from './ClienteMap/ClienteMap';
+import Select from '../../../../components/Select';
 import { ICliente } from '../../../../types/Cliente';
+import ZonasService from '../../../../services/ZonasService';
 
 interface InformacionGeneralProps {
   cliente: ICliente;
@@ -18,118 +20,45 @@ interface InformacionGeneralProps {
   onChangeClienteField: (field: string, value: any) => void;
 }
 
-const FIELDS = [
-  {
-    type: 'input',
-    id: 'razon_social',
-    label: 'Razon Social',
-    className: 'col-span-6 sm:col-span-4',
-  },
-  {
-    type: 'input',
-    id: 'telefono',
-    label: 'Telefono',
-    className: 'col-span-6 sm:col-span-2',
-  },
-  {
-    type: 'map',
-    id: 'map',
-    label: 'Mapa',
-    className: 'col-span-6',
-  },
-  { type: 'input', id: 'calle', label: 'Calle', className: 'col-span-6' },
-  {
-    type: 'input',
-    id: 'altura',
-    label: 'Altura',
-    className: 'col-span-6 sm:col-span-6 lg:col-span-2',
-  },
-  {
-    type: 'input',
-    id: 'piso',
-    label: 'Piso',
-    className: 'col-span-6 sm:col-span-6 lg:col-span-2',
-  },
-  {
-    type: 'input',
-    id: 'depto',
-    label: 'Depto',
-    className: 'col-span-6 sm:col-span-6 lg:col-span-2',
-  },
-  {
-    type: 'input',
-    id: 'localidad',
-    label: 'Localidad',
-    className: 'col-span-6 sm:col-span-4',
-  },
-  {
-    type: 'input',
-    id: 'codigo_postal',
-    label: 'CP',
-    className: 'col-span-6 sm:col-span-2',
-  },
-  {
-    type: 'input',
-    id: 'entre',
-    label: 'Entre',
-    className: 'col-span-6 sm:col-span-3',
-  },
-  {
-    type: 'input',
-    id: 'y',
-    label: 'Y',
-    className: 'col-span-6 sm:col-span-3',
-  },
-  {
-    type: 'input',
-    id: 'latitud',
-    label: 'Latitud',
-    className: 'col-span-6 sm:col-span-3',
-    disabled: true,
-  },
-  {
-    type: 'input',
-    id: 'longitud',
-    label: 'Longitud',
-    className: 'col-span-6 sm:col-span-3',
-    disabled: true,
-  },
-  {
-    type: 'input',
-    id: 'observaciones',
-    label: 'Observaciones',
-    className: 'col-span-6',
-  },
-];
-
 export default function InformacionGeneral({
   cliente,
   onLocationChanged,
   onChangeClienteField,
 }: InformacionGeneralProps): React.ReactElement {
-  const renderFields = () => {
-    return FIELDS.map((field) => (
-      <div className={field.className} key={field.id}>
-        {field.type === 'map' && (
-          <ClienteMap
-            lat={cliente.latitud}
-            lng={cliente.longitud}
-            onLocationChanged={onLocationChanged}
-          />
-        )}
-        {field.type === 'input' && (
-          <Input
-            id={field.id}
-            name={field.id}
-            type="text"
-            label={field.label}
-            value={cliente[field.id as keyof ICliente] || ''}
-            onChange={onChangeClienteField}
-            disabled={field.disabled}
-          />
-        )}
-      </div>
-    ));
+  const [zonas, setZonas] = useState<any[]>([]);
+  const [subzonas, setSubzonas] = useState<any[]>([]);
+  const [currZona, setCurrZona] = useState<number | null>(null);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    const zonas = await ZonasService.getZonas();
+    const subzonas = await ZonasService.getSubzonas();
+
+    setZonas(zonas);
+    setSubzonas(subzonas);
+  };
+
+  const getSubzonasByZona = () => {
+    if (currZona && !cliente.zona_sub_id) {
+      return subzonas
+        .filter((subzona) => subzona.zona_id === currZona)
+        .map((subzona) => ({
+          label: subzona.sub_zona_nombre,
+          value: subzona.sub_zona_id,
+        }));
+    }
+
+    if (!currZona && cliente.zona_sub_id) {
+      return subzonas.map((subzona) => ({
+        label: subzona.sub_zona_nombre,
+        value: subzona.sub_zona_id,
+      }));
+    }
+
+    return [];
   };
 
   return (
@@ -141,7 +70,172 @@ export default function InformacionGeneral({
           </h3>
         </div>
         <div className="mt-5 space-y-6 md:mt-0 md:col-span-2">
-          <div className="grid grid-cols-6 gap-6">{renderFields()}</div>
+          <div className="grid grid-cols-6 gap-6">
+            <div className="col-span-6 sm:col-span-4">
+              <Input
+                id={'razon_social'}
+                name={'razon_social'}
+                type="text"
+                label={'Razon Social'}
+                value={cliente.razon_social || ''}
+                onChange={onChangeClienteField}
+              />
+            </div>
+            <div className="col-span-6 sm:col-span-2">
+              <Input
+                id={'telefono'}
+                name={'telefono'}
+                type="text"
+                label={'Telefono'}
+                value={cliente.telefono || ''}
+                onChange={onChangeClienteField}
+              />
+            </div>
+            <div className="col-span-6">
+              <ClienteMap
+                lat={cliente.latitud}
+                lng={cliente.longitud}
+                onLocationChanged={onLocationChanged}
+              />
+            </div>
+            <div className="col-span-6">
+              <Input
+                id={'calle'}
+                name={'calle'}
+                type="text"
+                label={'Calle'}
+                value={cliente.calle || ''}
+                onChange={onChangeClienteField}
+              />
+            </div>
+            <div className="col-span-6 sm:col-span-6 lg:col-span-2">
+              <Input
+                id={'altura'}
+                name={'altura'}
+                type="text"
+                label={'Altura'}
+                value={cliente.altura || ''}
+                onChange={onChangeClienteField}
+              />
+            </div>
+            <div className="col-span-6 sm:col-span-6 lg:col-span-2">
+              <Input
+                id={'piso'}
+                name={'piso'}
+                type="text"
+                label={'Piso'}
+                value={cliente.piso || ''}
+                onChange={onChangeClienteField}
+              />
+            </div>
+            <div className="col-span-6 sm:col-span-6 lg:col-span-2">
+              <Input
+                id={'depto'}
+                name={'depto'}
+                type="text"
+                label={'Depto'}
+                value={cliente.depto || ''}
+                onChange={onChangeClienteField}
+              />
+            </div>
+            <div className="col-span-6 sm:col-span-4">
+              <Input
+                id={'localidad'}
+                name={'localidad'}
+                type="text"
+                label={'Localidad'}
+                value={cliente.localidad || ''}
+                onChange={onChangeClienteField}
+              />
+            </div>
+            <div className="col-span-6 sm:col-span-2">
+              <Input
+                id={'codigo_postal'}
+                name={'codigo_postal'}
+                type="text"
+                label={'CP'}
+                value={cliente.codigo_postal || ''}
+                onChange={onChangeClienteField}
+              />
+            </div>
+            <div className="col-span-6 sm:col-span-3">
+              <Input
+                id={'entre'}
+                name={'entre'}
+                type="text"
+                label={'Entre'}
+                value={cliente.entre || ''}
+                onChange={onChangeClienteField}
+              />
+            </div>
+            <div className="col-span-6 sm:col-span-3">
+              <Input
+                id={'y'}
+                name={'y'}
+                type="text"
+                label={'Y'}
+                value={cliente.y || ''}
+                onChange={onChangeClienteField}
+              />
+            </div>
+            <div className="col-span-6 sm:col-span-3">
+              <Select
+                label="Zona"
+                value={currZona || -1}
+                options={zonas.map((zona) => ({
+                  label: zona.zona_nombre,
+                  value: zona.zona_id,
+                }))}
+                onOptionChange={(value) => {
+                  setCurrZona(value);
+                  onChangeClienteField('zona_sub_id', null);
+                }}
+              />
+            </div>
+            <div className="col-span-6 sm:col-span-3">
+              <Select
+                label="Subzona"
+                value={cliente.zona_sub_id || -1}
+                options={getSubzonasByZona()}
+                onOptionChange={(value) =>
+                  onChangeClienteField('zona_sub_id', value)
+                }
+              />
+            </div>
+            <div className="col-span-6 sm:col-span-3">
+              <Input
+                id={'latitud'}
+                name={'latitud'}
+                type="text"
+                label={'Latitud'}
+                value={cliente.latitud || ''}
+                onChange={onChangeClienteField}
+                disabled
+              />
+            </div>
+            <div className="col-span-6 sm:col-span-3">
+              <Input
+                id={'longitud'}
+                name={'longitud'}
+                type="text"
+                label={'Longitud'}
+                value={cliente.longitud || ''}
+                onChange={onChangeClienteField}
+                disabled
+              />
+            </div>
+            <div className="col-span-6">
+              <Input
+                id={'observaciones'}
+                name={'observaciones'}
+                type="text"
+                label={'Observaciones'}
+                value={cliente.observaciones || ''}
+                onChange={onChangeClienteField}
+                disabled
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>

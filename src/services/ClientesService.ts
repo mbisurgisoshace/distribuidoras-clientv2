@@ -26,6 +26,13 @@ export default class ClientesService extends BaseService {
     );
   }
 
+  public static async createCliente(cliente: ICliente): Promise<ICliente> {
+    return await this.postJSONRequest<ICliente, ICliente>(
+      this.clientesRoute,
+      cliente
+    );
+  }
+
   public static async searchClientes(
     filterText: string,
     pageSize: number,

@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useCallback } from 'react';
 
 import { ICliente } from '../../../../types/Cliente';
@@ -18,7 +19,6 @@ const initData: ICliente = {
   y: '',
   latitud: 0,
   longitud: 0,
-  zona_id: null,
   zona_sub_id: null,
   canal_id: null,
   subcanal_id: null,
@@ -29,6 +29,7 @@ const initData: ICliente = {
 };
 
 export const useClienteForm = (clienteId: any) => {
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [cliente, setCliente] = useState<ICliente>(initData);
 
@@ -50,7 +51,7 @@ export const useClienteForm = (clienteId: any) => {
   };
 
   const onClienteFieldChanged = (field: string, value: any) => {
-    setCliente({ ...cliente, [field]: value });
+    setCliente((curr) => ({ ...curr, [field]: value }));
   };
 
   const onLocationChanged = (
@@ -103,12 +104,19 @@ export const useClienteForm = (clienteId: any) => {
           infoText: 'El cliente fue actualizado correctamente.',
         });
       } else {
-        console.log('newCliente');
+        const newCliente = await ClientesService.createCliente(cliente);
+        toaster().success({
+          title: 'Creado correctamente!',
+          infoText: 'El cliente fue creado correctamente.',
+        });
+        setCliente(newCliente);
+        navigate(`/clientes/${newCliente.cliente_id}`);
       }
     } catch (err: any) {
+      console.log('err', err);
       toaster().error({
         title: 'Ha ocurrido un error!',
-        infoText: err,
+        infoText: 'El cliente no se ha podido guardar.',
       });
     }
 

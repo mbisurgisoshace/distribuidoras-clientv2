@@ -86,7 +86,13 @@ export default abstract class BaseService {
       body,
     });
 
-    return await response.json();
+    const parsedResponse = await response.json();
+
+    if (this.ERROR_RESPONSE_CODES.indexOf(response.status) > -1) {
+      throw parsedResponse;
+    }
+
+    return parsedResponse;
   }
 
   static async postFileRequest<O>(route: string, params: FormData): Promise<O> {
