@@ -10,15 +10,19 @@ interface Option {
 }
 
 interface SelectProps {
+  id: string;
   label: string;
   value: number;
+  error?: string;
   options: Option[];
   onOptionChange: (value: number) => void;
 }
 
 export default function Select({
+  id,
   label,
   value,
+  error,
   options,
   onOptionChange,
 }: SelectProps): React.ReactElement {
@@ -111,6 +115,9 @@ export default function Select({
                 ))}
               </Listbox.Options>
             </Transition>
+            <p className="mt-1 text-xs text-red-600 h-4" id={id}>
+              {error || ' '}
+            </p>
           </div>
         </>
       )}

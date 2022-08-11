@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
 
 import Select from '../../../../components/Select';
+import { ICliente } from '../../../../types/Cliente';
 import CanalesService from '../../../../services/CanalesService';
 import CondicionesVentaService from '../../../../services/CondicionesVentaService';
 import PrecioService from '../../../../services/PreciosService';
 
 interface InformacionComercialProps {
-  cliente: any;
+  errors: any;
+  cliente: ICliente;
   onChangeClienteField: (field: string, value: any) => void;
 }
 
 export default function InformacionComercial({
+  errors,
   cliente,
   onChangeClienteField,
 }: InformacionComercialProps): React.ReactElement {
@@ -61,6 +64,7 @@ export default function InformacionComercial({
           <div className="grid grid-cols-6 gap-6">
             <div className="col-span-6 sm:col-span-3">
               <Select
+                id="canal_id"
                 label="Canal"
                 value={cliente.canal_id || -1}
                 options={canales.map((canal) => ({
@@ -71,20 +75,24 @@ export default function InformacionComercial({
                   onChangeClienteField('canal_id', value);
                   onChangeClienteField('subcanal_id', null);
                 }}
+                error={errors.canal_id}
               />
             </div>
             <div className="col-span-6 sm:col-span-3">
               <Select
+                id="subcanal_id"
                 label="Subcanal"
                 value={cliente.subcanal_id || -1}
                 options={getSubcanalesByCanal()}
                 onOptionChange={(value) =>
                   onChangeClienteField('subcanal_id', value)
                 }
+                error={errors.subcanal_id}
               />
             </div>
             <div className="col-span-6 sm:col-span-3">
               <Select
+                id="condicion_venta_id"
                 label="Condicion de Venta"
                 value={cliente.condicion_venta_id || -1}
                 options={condicionesVenta.map((condicionVenta) => ({
@@ -94,10 +102,12 @@ export default function InformacionComercial({
                 onOptionChange={(value) =>
                   onChangeClienteField('condicion_venta_id', value)
                 }
+                error={errors.condicion_venta_id}
               />
             </div>
             <div className="col-span-6 sm:col-span-3">
               <Select
+                id="lista_precio_id"
                 label="Lista de Precio"
                 value={cliente.lista_precio_id || -1}
                 options={listasPrecio.map((listaPrecio) => ({
@@ -107,6 +117,7 @@ export default function InformacionComercial({
                 onOptionChange={(value) =>
                   onChangeClienteField('lista_precio_id', value)
                 }
+                error={errors.lista_precio_id}
               />
             </div>
           </div>

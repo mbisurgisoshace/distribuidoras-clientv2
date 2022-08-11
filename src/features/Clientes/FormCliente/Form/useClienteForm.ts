@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { ICliente } from '../../../../types/Cliente';
 import ClientesService from '../../../../services/ClientesService';
 import toaster from '../../../../components/Toast/toaster';
+import { useClienteValidation } from './useClienteValidation';
 
 const initData: ICliente = {
   razon_social: '',
@@ -30,6 +31,8 @@ const initData: ICliente = {
 
 export const useClienteForm = (clienteId: any) => {
   const navigate = useNavigate();
+  const { validate } = useClienteValidation();
+  const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [cliente, setCliente] = useState<ICliente>(initData);
 
@@ -94,6 +97,18 @@ export const useClienteForm = (clienteId: any) => {
 
   const onSubmit = async (e: any) => {
     e.preventDefault();
+
+    setErrors({});
+    const validationErrors = validate(cliente);
+
+    if (Object.keys(validationErrors).length > 0) {
+      toaster().error({
+        title: 'Validacion de datos!',
+        infoText: 'Complete todos los campos requeridos.',
+      });
+      return setErrors(validationErrors);
+    }
+
     setIsLoading(true);
 
     try {
@@ -124,6 +139,7 @@ export const useClienteForm = (clienteId: any) => {
   };
 
   return {
+    errors,
     cliente,
     onSubmit,
     isLoading,

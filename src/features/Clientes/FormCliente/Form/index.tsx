@@ -15,13 +15,14 @@ export default function Form({
   clienteId,
 }: FormProps): React.ReactElement {
   const {
+    errors,
     cliente,
     onSubmit,
     isLoading,
     onLocationChanged,
     onClienteFieldChanged,
   } = useClienteForm(clienteId);
-
+  console.log('errors', errors);
   return (
     <form
       className={`${
@@ -30,15 +31,18 @@ export default function Form({
       onSubmit={onSubmit}
     >
       <InformacionGeneral
+        errors={errors}
         cliente={cliente}
         onLocationChanged={onLocationChanged}
         onChangeClienteField={onClienteFieldChanged}
       />
       <InformacionComercial
+        errors={errors}
         cliente={cliente}
         onChangeClienteField={onClienteFieldChanged}
       />
       <InformacionImpositiva
+        errors={errors}
         cliente={cliente}
         onChangeClienteField={onClienteFieldChanged}
       />

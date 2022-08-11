@@ -7,6 +7,7 @@ import { ICliente } from '../../../../types/Cliente';
 import ZonasService from '../../../../services/ZonasService';
 
 interface InformacionGeneralProps {
+  errors: any;
   cliente: ICliente;
   onLocationChanged: (
     lat: number,
@@ -21,6 +22,7 @@ interface InformacionGeneralProps {
 }
 
 export default function InformacionGeneral({
+  errors,
   cliente,
   onLocationChanged,
   onChangeClienteField,
@@ -42,7 +44,7 @@ export default function InformacionGeneral({
   };
 
   const getSubzonasByZona = () => {
-    if (currZona && !cliente.zona_sub_id) {
+    if (currZona) {
       return subzonas
         .filter((subzona) => subzona.zona_id === currZona)
         .map((subzona) => ({
@@ -79,6 +81,7 @@ export default function InformacionGeneral({
                 label={'Razon Social'}
                 value={cliente.razon_social || ''}
                 onChange={onChangeClienteField}
+                error={errors.razon_social}
               />
             </div>
             <div className="col-span-6 sm:col-span-2">
@@ -106,6 +109,7 @@ export default function InformacionGeneral({
                 label={'Calle'}
                 value={cliente.calle || ''}
                 onChange={onChangeClienteField}
+                error={errors.calle}
               />
             </div>
             <div className="col-span-6 sm:col-span-6 lg:col-span-2">
@@ -180,6 +184,7 @@ export default function InformacionGeneral({
             </div>
             <div className="col-span-6 sm:col-span-3">
               <Select
+                id="zona_id"
                 label="Zona"
                 value={currZona || -1}
                 options={zonas.map((zona) => ({
@@ -194,12 +199,14 @@ export default function InformacionGeneral({
             </div>
             <div className="col-span-6 sm:col-span-3">
               <Select
+                id="zona_sub_id"
                 label="Subzona"
                 value={cliente.zona_sub_id || -1}
                 options={getSubzonasByZona()}
                 onOptionChange={(value) =>
                   onChangeClienteField('zona_sub_id', value)
                 }
+                error={errors.zona_sub_id}
               />
             </div>
             <div className="col-span-6 sm:col-span-3">

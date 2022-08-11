@@ -6,6 +6,7 @@ interface InputProps {
   type: string;
   name: string;
   label: string;
+  error?: string;
   disabled?: boolean;
   value: string | number;
   onChange: (name: string, value: any) => void;
@@ -17,6 +18,7 @@ export default function Input({
   name,
   label,
   value,
+  error,
   onChange,
   disabled = false,
 }: InputProps): React.ReactElement {
@@ -37,6 +39,9 @@ export default function Input({
           { 'bg-gray-50': disabled }
         )}
       />
+      <p className="mt-1 text-xs text-red-600 h-4" id={id}>
+        {error || ' '}
+      </p>
     </>
   );
 }
