@@ -5,6 +5,7 @@ export default class ClientesService extends BaseService {
   static clientesRoute = '/clientes';
   static clienteRoute = '/clientes/{cliente_id}';
   static searchClientesRoute = '/clientes/filter';
+  static clientePedidosRoute = '/clientes/{cliente_id}/lastPedidos';
 
   public static async getClientes(): Promise<Array<ICliente>> {
     return await this.getRequest<Array<ICliente>>(this.clientesRoute);
@@ -45,6 +46,12 @@ export default class ClientesService extends BaseService {
         pageSize,
         currentPage,
       }
+    );
+  }
+
+  public static async getLastPedidos(clienteId: number): Promise<any[]> {
+    return await this.getRequest(
+      this.buildRoute(this.clientePedidosRoute, { cliente_id: clienteId })
     );
   }
 }

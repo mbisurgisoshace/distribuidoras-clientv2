@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
-import { classNames } from '../../../../layouts/utils';
-import PlantillasService from '../../../../services/PlantillasService';
 import { useVisitas } from './useVisitas';
+import { classNames } from '../../../../layouts/utils';
 
 interface VisitasProps {
-  show: boolean;
   clienteId: any;
 }
 
@@ -19,20 +17,13 @@ const diasVisita = [
 ];
 
 export default function Visitas({
-  show,
   clienteId,
 }: VisitasProps): React.ReactElement {
   const { dias, onSubmit, isLoading, onSelectDia } = useVisitas(clienteId);
 
   return (
-    <form
-      className={`${
-        !show ? 'hidden' : 'block'
-      } mt-0 sm:mt-3.5 pb-3.5 space-y-6`}
-      onSubmit={onSubmit}
-    >
+    <form className="mt-0 sm:mt-3.5 pb-3.5 space-y-6" onSubmit={onSubmit}>
       <div className="bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6">
-        {/* <div className="px-8 py-12 flex justify-center bg-white"> */}
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 md:grid-cols-6">
           {diasVisita.map((dia) => (
             <div
@@ -43,14 +34,13 @@ export default function Visitas({
                 dias.includes(dia.value)
                   ? 'bg-indigo-600 border-transparent text-white hover:bg-indigo-700'
                   : 'bg-white border-gray-200 text-gray-900 hover:bg-gray-50',
-                'border rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1'
+                'border rounded-md px-2.5 py-1.5 flex items-center justify-center text-sm font-medium uppercase sm:flex-1'
               )}
             >
               {dia.name}
             </div>
           ))}
         </div>
-        {/* </div> */}
       </div>
       <div className="flex justify-end">
         <button

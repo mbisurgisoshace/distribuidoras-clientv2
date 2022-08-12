@@ -6,12 +6,12 @@ import InformacionComercial from './InformacionComercial';
 import InformacionImpositiva from './InformacionImpositiva';
 
 interface FormProps {
-  show: boolean;
+  //show: boolean;
   clienteId: any;
 }
 
 export default function Form({
-  show,
+  //show,
   clienteId,
 }: FormProps): React.ReactElement {
   const {
@@ -25,9 +25,10 @@ export default function Form({
 
   return (
     <form
-      className={`${
-        !show ? 'hidden' : 'block'
-      } mt-0 sm:mt-3.5 pb-3.5 space-y-6`}
+      // className={`${
+      //   !show ? 'hidden' : 'block'
+      // } mt-0 sm:mt-3.5 pb-3.5 space-y-6`}
+      className="mt-0 sm:mt-3.5 pb-3.5 space-y-6"
       onSubmit={onSubmit}
     >
       <InformacionGeneral

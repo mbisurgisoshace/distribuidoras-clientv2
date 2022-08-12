@@ -5,6 +5,7 @@ import Form from './Form';
 import Tabs from '../../../components/Tabs';
 import OuterWrapper from '../../../layouts/OuterWrapper';
 import Visitas from './Visitas';
+import Pedidos from './Pedidos';
 
 export default function FormCliente(): React.ReactElement {
   const { clienteId } = useParams();
@@ -45,8 +46,9 @@ export default function FormCliente(): React.ReactElement {
           ]}
         />
       </>
-      <Form show={view === 'general'} clienteId={clienteId} />
-      <Visitas show={view === 'visitas'} clienteId={clienteId} />
+      {view === 'general' && <Form clienteId={clienteId} />}
+      {view === 'visitas' && <Visitas clienteId={clienteId} />}
+      {view === 'pedidos' && <Pedidos clienteId={clienteId} />}
     </OuterWrapper>
   );
 }
