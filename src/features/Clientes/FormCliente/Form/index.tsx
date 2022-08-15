@@ -1,121 +1,66 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
+import { useClienteForm } from './useClienteForm';
 import InformacionGeneral from './InformacionGeneral';
 import InformacionComercial from './InformacionComercial';
 import InformacionImpositiva from './InformacionImpositiva';
-import ClientesService from '../../../../services/ClientesService';
-import { ICliente } from '../../../../types/Cliente';
 
 interface FormProps {
-  show: boolean;
+  //show: boolean;
   clienteId: any;
 }
 
-const initData: ICliente = {
-  razon_social: '',
-  telefono: '',
-  cuit: '',
-  calle: '',
-  altura: '',
-  localidad: '',
-  codigo_postal: '',
-  entre: '',
-  y: '',
-  latitud: 0,
-  longitud: 0,
-  zona_id: null,
-  zona_sub_id: null,
-  canal_id: null,
-  subcanal_id: null,
-  condicion_iva_id: null,
-  condicion_venta_id: null,
-  lista_precio_id: null,
-  observaciones: '',
-};
-
 export default function Form({
-  show,
+  //show,
   clienteId,
 }: FormProps): React.ReactElement {
-  const [cliente, setCliente] = useState<ICliente>(initData);
-
-  useEffect(() => {
-    if (clienteId && !isNaN(parseInt(clienteId))) {
-      getCliente(parseInt(clienteId));
-    }
-  }, [clienteId]);
-
-  const getCliente = async (clienteId: number) => {
-    const cliente = await ClientesService.getCliente(clienteId);
-    setCliente(cliente);
-  };
-
-  const onLocationChanged = (
-    lat: number,
-    lng: number,
-    calle?: string,
-    altura?: string,
-    localidad?: string,
-    cp?: string,
-    provincia?: string
-  ) => {
-    if (calle) {
-      cliente.calle = calle;
-    }
-
-    if (altura) {
-      cliente.altura = altura;
-    }
-
-    if (localidad) {
-      cliente.localidad = localidad;
-    }
-
-    if (cp) {
-      cliente.codigo_postal = cp;
-    }
-
-    setCliente({
-      ...cliente,
-    });
-  };
+  const {
+    errors,
+    cliente,
+    onSubmit,
+    isLoading,
+    onLocationChanged,
+    onClienteFieldChanged,
+  } = useClienteForm(clienteId);
 
   return (
     <form
-      className={`${!show ? 'hidden' : 'block'} mt-3.5 space-y-6`}
-      onSubmit={() => {}}
+      // className={`${
+      //   !show ? 'hidden' : 'block'
+      // } mt-0 sm:mt-3.5 pb-3.5 space-y-6`}
+      className="mt-0 sm:mt-3.5 pb-3.5 space-y-6"
+      onSubmit={onSubmit}
     >
       <InformacionGeneral
+        errors={errors}
         cliente={cliente}
         onLocationChanged={onLocationChanged}
-        onChangeClienteField={(field, value) =>
-          setCliente({ ...cliente, [field]: value })
-        }
+        onChangeClienteField={onClienteFieldChanged}
       />
       <InformacionComercial
+        errors={errors}
         cliente={cliente}
-        onChangeClienteField={(field, value) =>
-          setCliente({ ...cliente, [field]: value })
-        }
+        onChangeClienteField={onClienteFieldChanged}
       />
       <InformacionImpositiva
+        errors={errors}
         cliente={cliente}
-        onChangeClienteField={(field, value) =>
-          setCliente({ ...cliente, [field]: value })
-        }
+        onChangeClienteField={onClienteFieldChanged}
       />
       <div className="flex justify-end">
         <button
           type="button"
+          onClick={() => {}}
           className="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
           Cancel
         </button>
         <button
           type="submit"
+          disabled={isLoading}
           className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
-          Save
+          Guardar
         </button>
       </div>
     </form>

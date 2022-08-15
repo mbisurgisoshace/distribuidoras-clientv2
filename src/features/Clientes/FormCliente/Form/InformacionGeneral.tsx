@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
+import Input from '../../../../components/Input';
+import ClienteMap from './ClienteMap/ClienteMap';
+import Select from '../../../../components/Select';
 import { ICliente } from '../../../../types/Cliente';
-import ClienteMap from './ClienteMap';
+import ZonasService from '../../../../services/ZonasService';
 
 interface InformacionGeneralProps {
+  errors: any;
   cliente: ICliente;
   onLocationChanged: (
     lat: number,
@@ -18,10 +22,47 @@ interface InformacionGeneralProps {
 }
 
 export default function InformacionGeneral({
+  errors,
   cliente,
   onLocationChanged,
   onChangeClienteField,
 }: InformacionGeneralProps): React.ReactElement {
+  const [zonas, setZonas] = useState<any[]>([]);
+  const [subzonas, setSubzonas] = useState<any[]>([]);
+  const [currZona, setCurrZona] = useState<number | null>(null);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    const zonas = await ZonasService.getZonas();
+    const subzonas = await ZonasService.getSubzonas();
+
+    setZonas(zonas);
+    setSubzonas(subzonas);
+  };
+
+  const getSubzonasByZona = () => {
+    if (currZona) {
+      return subzonas
+        .filter((subzona) => subzona.zona_id === currZona)
+        .map((subzona) => ({
+          label: subzona.sub_zona_nombre,
+          value: subzona.sub_zona_id,
+        }));
+    }
+
+    if (!currZona && cliente.zona_sub_id) {
+      return subzonas.map((subzona) => ({
+        label: subzona.sub_zona_nombre,
+        value: subzona.sub_zona_id,
+      }));
+    }
+
+    return [];
+  };
+
   return (
     <div className="bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6">
       <div className="md:grid md:grid-cols-3 md:gap-6">
@@ -33,41 +74,24 @@ export default function InformacionGeneral({
         <div className="mt-5 space-y-6 md:mt-0 md:col-span-2">
           <div className="grid grid-cols-6 gap-6">
             <div className="col-span-6 sm:col-span-4">
-              <label
-                htmlFor="razon_social"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Razon Social
-              </label>
-              <input
+              <Input
+                id={'razon_social'}
+                name={'razon_social'}
                 type="text"
-                name="razon_social"
-                id="razon_social"
+                label={'Razon Social'}
                 value={cliente.razon_social || ''}
-                autoComplete="razon_social"
-                onChange={(e) =>
-                  onChangeClienteField('razon_social', e.target.value)
-                }
-                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                onChange={onChangeClienteField}
+                error={errors.razon_social}
               />
             </div>
             <div className="col-span-6 sm:col-span-2">
-              <label
-                htmlFor="telefono"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Telefono
-              </label>
-              <input
+              <Input
+                id={'telefono'}
+                name={'telefono'}
                 type="text"
-                name="telefono"
-                id="telefono"
+                label={'Telefono'}
                 value={cliente.telefono || ''}
-                autoComplete="telefono"
-                onChange={(e) =>
-                  onChangeClienteField('telefono', e.target.value)
-                }
-                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                onChange={onChangeClienteField}
               />
             </div>
             <div className="col-span-6">
@@ -78,170 +102,144 @@ export default function InformacionGeneral({
               />
             </div>
             <div className="col-span-6">
-              <label
-                htmlFor="calle"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Calle
-              </label>
-              <input
+              <Input
+                id={'calle'}
+                name={'calle'}
                 type="text"
-                name="calle"
-                id="calle"
+                label={'Calle'}
                 value={cliente.calle || ''}
-                autoComplete="calle"
-                onChange={(e) => onChangeClienteField('calle', e.target.value)}
-                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                onChange={onChangeClienteField}
+                error={errors.calle}
               />
             </div>
             <div className="col-span-6 sm:col-span-6 lg:col-span-2">
-              <label
-                htmlFor="altura"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Altura
-              </label>
-              <input
+              <Input
+                id={'altura'}
+                name={'altura'}
                 type="text"
-                name="altura"
-                id="altura"
+                label={'Altura'}
                 value={cliente.altura || ''}
-                autoComplete="altura"
-                onChange={(e) => onChangeClienteField('altura', e.target.value)}
-                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                onChange={onChangeClienteField}
               />
             </div>
-
-            <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-              <label
-                htmlFor="localidad"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Localidad
-              </label>
-              <input
+            <div className="col-span-6 sm:col-span-6 lg:col-span-2">
+              <Input
+                id={'piso'}
+                name={'piso'}
                 type="text"
-                name="localidad"
-                id="localidad"
+                label={'Piso'}
+                value={cliente.piso || ''}
+                onChange={onChangeClienteField}
+              />
+            </div>
+            <div className="col-span-6 sm:col-span-6 lg:col-span-2">
+              <Input
+                id={'depto'}
+                name={'depto'}
+                type="text"
+                label={'Depto'}
+                value={cliente.depto || ''}
+                onChange={onChangeClienteField}
+              />
+            </div>
+            <div className="col-span-6 sm:col-span-4">
+              <Input
+                id={'localidad'}
+                name={'localidad'}
+                type="text"
+                label={'Localidad'}
                 value={cliente.localidad || ''}
-                autoComplete="localidad"
-                onChange={(e) =>
-                  onChangeClienteField('localidad', e.target.value)
-                }
-                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                onChange={onChangeClienteField}
               />
             </div>
-
-            <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-              <label
-                htmlFor="codigo_postal"
-                className="block text-sm font-medium text-gray-700"
-              >
-                CP
-              </label>
-              <input
+            <div className="col-span-6 sm:col-span-2">
+              <Input
+                id={'codigo_postal'}
+                name={'codigo_postal'}
                 type="text"
-                name="codigo_postal"
-                id="codigo_postal"
+                label={'CP'}
                 value={cliente.codigo_postal || ''}
-                autoComplete="codigo_postal"
-                onChange={(e) =>
-                  onChangeClienteField('codigo_postal', e.target.value)
-                }
-                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                onChange={onChangeClienteField}
               />
             </div>
             <div className="col-span-6 sm:col-span-3">
-              <label
-                htmlFor="latitud"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Latitud
-              </label>
-              <input
+              <Input
+                id={'entre'}
+                name={'entre'}
                 type="text"
-                name="latitud"
-                id="latitud"
-                disabled
-                value={cliente.latitud || ''}
-                autoComplete="latitud"
-                onChange={(e) =>
-                  onChangeClienteField('latitud', e.target.value)
-                }
-                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md bg-gray-50"
-              />
-            </div>
-            <div className="col-span-6 sm:col-span-3">
-              <label
-                htmlFor="longitud"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Longitud
-              </label>
-              <input
-                type="text"
-                name="longitud"
-                id="longitud"
-                disabled
-                value={cliente.longitud || ''}
-                autoComplete="longitud"
-                onChange={(e) =>
-                  onChangeClienteField('longitud', e.target.value)
-                }
-                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md bg-gray-50"
-              />
-            </div>
-            <div className="col-span-6 sm:col-span-3">
-              <label
-                htmlFor="entre"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Entre
-              </label>
-              <input
-                type="text"
-                name="entre"
-                id="entre"
+                label={'Entre'}
                 value={cliente.entre || ''}
-                autoComplete="entre"
-                onChange={(e) => onChangeClienteField('entre', e.target.value)}
-                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                onChange={onChangeClienteField}
               />
             </div>
             <div className="col-span-6 sm:col-span-3">
-              <label
-                htmlFor="y"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Y
-              </label>
-              <input
+              <Input
+                id={'y'}
+                name={'y'}
                 type="text"
-                name="y"
-                id="y"
+                label={'Y'}
                 value={cliente.y || ''}
-                autoComplete="y"
-                onChange={(e) => onChangeClienteField('y', e.target.value)}
-                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                onChange={onChangeClienteField}
+              />
+            </div>
+            <div className="col-span-6 sm:col-span-3">
+              <Select
+                id="zona_id"
+                label="Zona"
+                value={currZona || -1}
+                options={zonas.map((zona) => ({
+                  label: zona.zona_nombre,
+                  value: zona.zona_id,
+                }))}
+                onOptionChange={(value) => {
+                  setCurrZona(value as number);
+                  onChangeClienteField('zona_sub_id', null);
+                }}
+              />
+            </div>
+            <div className="col-span-6 sm:col-span-3">
+              <Select
+                id="zona_sub_id"
+                label="Subzona"
+                value={cliente.zona_sub_id || -1}
+                options={getSubzonasByZona()}
+                onOptionChange={(value) =>
+                  onChangeClienteField('zona_sub_id', value)
+                }
+                error={errors.zona_sub_id}
+              />
+            </div>
+            <div className="col-span-6 sm:col-span-3">
+              <Input
+                id={'latitud'}
+                name={'latitud'}
+                type="text"
+                label={'Latitud'}
+                value={cliente.latitud || ''}
+                onChange={onChangeClienteField}
+                disabled
+              />
+            </div>
+            <div className="col-span-6 sm:col-span-3">
+              <Input
+                id={'longitud'}
+                name={'longitud'}
+                type="text"
+                label={'Longitud'}
+                value={cliente.longitud || ''}
+                onChange={onChangeClienteField}
+                disabled
               />
             </div>
             <div className="col-span-6">
-              <label
-                htmlFor="observaciones"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Observaciones
-              </label>
-              <input
+              <Input
+                id={'observaciones'}
+                name={'observaciones'}
                 type="text"
-                name="observaciones"
-                id="observaciones"
+                label={'Observaciones'}
                 value={cliente.observaciones || ''}
-                autoComplete="observaciones"
-                onChange={(e) =>
-                  onChangeClienteField('observaciones', e.target.value)
-                }
-                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                onChange={onChangeClienteField}
+                disabled
               />
             </div>
           </div>

@@ -5,25 +5,29 @@ import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
 import { classNames } from '../../layouts/utils';
 
 interface Option {
-  value: number;
   label: string;
+  value: number | string;
 }
 
 interface SelectProps {
+  id: string;
   label: string;
-  value: number;
+  error?: string;
   options: Option[];
-  onOptionChange: (value: number) => void;
+  value: number | string;
+  onOptionChange: (value: number | string) => void;
 }
 
 export default function Select({
+  id,
   label,
   value,
+  error,
   options,
   onOptionChange,
 }: SelectProps): React.ReactElement {
   const getOption = useCallback(
-    (optionId: number) => {
+    (optionId: number | string) => {
       return options.find((option) => option.value === optionId);
     },
     [options]
@@ -111,6 +115,9 @@ export default function Select({
                 ))}
               </Listbox.Options>
             </Transition>
+            <p className="mt-1 text-xs text-red-600 h-4" id={id}>
+              {error || ' '}
+            </p>
           </div>
         </>
       )}

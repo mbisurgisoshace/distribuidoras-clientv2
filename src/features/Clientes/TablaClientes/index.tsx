@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   flexRender,
   useReactTable,
@@ -31,6 +32,7 @@ export default function TablaClientes({
   onPageChange,
   onFilterApply,
 }: TablaClientesProps): React.ReactElement {
+  const navigate = useNavigate();
   const { columns } = useClienteColumns();
 
   const [{ pageIndex, pageSize }, setPagination] =
@@ -75,7 +77,7 @@ export default function TablaClientes({
           <OptionsButton
             mainOption={{
               name: 'Nuevo Cliente',
-              onClick: () => {},
+              onClick: () => navigate('/clientes/new'),
               icon: (
                 <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
               ),

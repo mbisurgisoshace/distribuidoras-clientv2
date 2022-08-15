@@ -6,11 +6,13 @@ import Select from '../../../../components/Select';
 import CondicionesIvaService from '../../../../services/CondicionesIvaService';
 
 interface InformacionImpositivaProps {
+  errors: any;
   cliente: ICliente;
   onChangeClienteField: (field: string, value: any) => void;
 }
 
 export default function InformacionImpositiva({
+  errors,
   cliente,
   onChangeClienteField,
 }: InformacionImpositivaProps): React.ReactElement {
@@ -54,6 +56,7 @@ export default function InformacionImpositiva({
             </div>
             <div className="col-span-6 sm:col-span-3">
               <Select
+                id="condicion_iva_id"
                 label="Condicion de IVA"
                 value={cliente.condicion_iva_id || -1}
                 options={condicionesIva.map((condicionIva) => ({
@@ -63,6 +66,7 @@ export default function InformacionImpositiva({
                 onOptionChange={(value) =>
                   onChangeClienteField('condicion_iva_id', value)
                 }
+                error={errors.condicion_iva_id}
               />
             </div>
           </div>
