@@ -36,7 +36,7 @@ export default function FilterClientes({
             name="search"
             value={filterValue}
             onChange={(e) => setFilterValue(e.target.value)}
-            placeholder="Buscar por razon social, calle o altura"
+            placeholder="Buscar por codigo, razon social, calle o altura"
             className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md"
           />
           {filterValue && (
