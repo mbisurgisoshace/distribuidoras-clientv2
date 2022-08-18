@@ -1,13 +1,15 @@
 import React from 'react';
 import {
   flexRender,
+  ExpandedState,
   useReactTable,
   getCoreRowModel,
 } from '@tanstack/react-table';
 
-import { usePedidosClienteColumns } from '../usePedidosClienteColumns';
-import HeaderCell from './Cells/HeaderCell';
 import DataCell from './Cells/DataCell';
+import HeaderCell from './Cells/HeaderCell';
+import { usePedidosClienteColumns } from '../usePedidosClienteColumns';
+import ExpandablePedidoRow from '../../../../../components/ExpandablePedidoRow';
 
 interface TablaPedidosProps {
   data: any;
@@ -17,10 +19,16 @@ export default function TablaPedidos({
   data,
 }: TablaPedidosProps): React.ReactElement {
   const { columns } = usePedidosClienteColumns();
+  const [expanded, setExpanded] = React.useState<ExpandedState>({});
 
   const table = useReactTable({
     data,
     columns,
+    state: {
+      expanded,
+    },
+    manualExpanding: true,
+    onExpandedChange: setExpanded,
     getCoreRowModel: getCoreRowModel(),
   });
 
@@ -47,19 +55,25 @@ export default function TablaPedidos({
         </thead>
         <tbody className="divide-y divide-gray-200 bg-white">
           {table.getRowModel().rows.map((row) => (
-            <tr key={row.id}>
-              {row.getVisibleCells().map((cell) => {
-                return (
-                  <DataCell
-                    key={cell.id}
-                    id={cell.id}
-                    columnId={cell.column.id}
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </DataCell>
-                );
-              })}
-            </tr>
+            <>
+              <tr key={row.id}>
+                {row.getVisibleCells().map((cell) => {
+                  return (
+                    <DataCell
+                      key={cell.id}
+                      id={cell.id}
+                      columnId={cell.column.id}
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </DataCell>
+                  );
+                })}
+              </tr>
+              {row.getIsExpanded() && <ExpandablePedidoRow row={row} />}
+            </>
           ))}
         </tbody>
       </table>
