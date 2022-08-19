@@ -56,7 +56,10 @@ export default function TablaPedidos({
         <tbody className="divide-y divide-gray-200 bg-white">
           {table.getRowModel().rows.map((row) => (
             <>
-              <tr key={row.id}>
+              <tr
+                key={row.id}
+                className={`${row.getIsExpanded() ? 'bg-indigo-200' : ''}`}
+              >
                 {row.getVisibleCells().map((cell) => {
                   return (
                     <DataCell
@@ -72,7 +75,9 @@ export default function TablaPedidos({
                   );
                 })}
               </tr>
-              {row.getIsExpanded() && <ExpandablePedidoRow row={row} />}
+              {row.getIsExpanded() && (
+                <ExpandablePedidoRow row={row} colSpan={6} />
+              )}
             </>
           ))}
         </tbody>
