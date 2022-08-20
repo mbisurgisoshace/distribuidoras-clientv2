@@ -1,32 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import { ICliente } from '../../../../types/Cliente';
 
 import Select from '../../../../components/Select';
-import CondicionesIvaService from '../../../../services/CondicionesIvaService';
 
 interface InformacionImpositivaProps {
   errors: any;
   cliente: ICliente;
+  condicionesIva: any[];
   onChangeClienteField: (field: string, value: any) => void;
 }
 
 export default function InformacionImpositiva({
   errors,
   cliente,
+  condicionesIva,
   onChangeClienteField,
 }: InformacionImpositivaProps): React.ReactElement {
-  const [condicionesIva, setCondicionesIva] = useState<any[]>([]);
-
-  useEffect(() => {
-    getCondicionesIva();
-  }, []);
-
-  const getCondicionesIva = async () => {
-    const condicionesIva = await CondicionesIvaService.getCondicionesIva();
-    setCondicionesIva(condicionesIva);
-  };
-
   return (
     <div className="bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6">
       <div className="md:grid md:grid-cols-3 md:gap-6">

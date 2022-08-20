@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import Input from '../../../../components/Input';
 import ClienteMap from './ClienteMap/ClienteMap';
 import Select from '../../../../components/Select';
 import { ICliente } from '../../../../types/Cliente';
-import ZonasService from '../../../../services/ZonasService';
 
 interface InformacionGeneralProps {
   errors: any;
+  zonas: any[];
+  subzonas: any[];
   cliente: ICliente;
   onLocationChanged: (
     lat: number,
@@ -22,26 +23,14 @@ interface InformacionGeneralProps {
 }
 
 export default function InformacionGeneral({
+  zonas,
   errors,
   cliente,
+  subzonas,
   onLocationChanged,
   onChangeClienteField,
 }: InformacionGeneralProps): React.ReactElement {
-  const [zonas, setZonas] = useState<any[]>([]);
-  const [subzonas, setSubzonas] = useState<any[]>([]);
   const [currZona, setCurrZona] = useState<number | null>(null);
-
-  useEffect(() => {
-    getData();
-  }, []);
-
-  const getData = async () => {
-    const zonas = await ZonasService.getZonas();
-    const subzonas = await ZonasService.getSubzonas();
-
-    setZonas(zonas);
-    setSubzonas(subzonas);
-  };
 
   const getSubzonasByZona = () => {
     if (currZona) {

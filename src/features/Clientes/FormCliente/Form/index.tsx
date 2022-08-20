@@ -4,16 +4,13 @@ import { useClienteForm } from './useClienteForm';
 import InformacionGeneral from './InformacionGeneral';
 import InformacionComercial from './InformacionComercial';
 import InformacionImpositiva from './InformacionImpositiva';
+import { useTablas } from '../../../../hooks/useTablas';
 
 interface FormProps {
-  //show: boolean;
   clienteId: any;
 }
 
-export default function Form({
-  //show,
-  clienteId,
-}: FormProps): React.ReactElement {
+export default function Form({ clienteId }: FormProps): React.ReactElement {
   const {
     errors,
     cliente,
@@ -23,28 +20,33 @@ export default function Form({
     onClienteFieldChanged,
   } = useClienteForm(clienteId);
 
+  const { tablas } = useTablas(
+    'zonas,subzonas,canales,subcanales,condicionesIva,condicionesVenta,listasPrecio'
+  );
+
   return (
-    <form
-      // className={`${
-      //   !show ? 'hidden' : 'block'
-      // } mt-0 sm:mt-3.5 pb-3.5 space-y-6`}
-      className="mt-0 sm:mt-3.5 pb-3.5 space-y-6"
-      onSubmit={onSubmit}
-    >
+    <form className="mt-0 sm:mt-3.5 pb-3.5 space-y-6" onSubmit={onSubmit}>
       <InformacionGeneral
         errors={errors}
         cliente={cliente}
+        zonas={tablas.zonas}
+        subzonas={tablas.subzonas}
         onLocationChanged={onLocationChanged}
         onChangeClienteField={onClienteFieldChanged}
       />
       <InformacionComercial
         errors={errors}
         cliente={cliente}
+        canales={tablas.canales}
+        subcanales={tablas.subcanales}
+        listasPrecio={tablas.listasPrecio}
+        condicionesVenta={tablas.condicionesVenta}
         onChangeClienteField={onClienteFieldChanged}
       />
       <InformacionImpositiva
         errors={errors}
         cliente={cliente}
+        condicionesIva={tablas.condicionesIva}
         onChangeClienteField={onClienteFieldChanged}
       />
       <div className="flex justify-end">

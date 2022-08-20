@@ -1,44 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import Select from '../../../../components/Select';
 import { ICliente } from '../../../../types/Cliente';
-import CanalesService from '../../../../services/CanalesService';
-import CondicionesVentaService from '../../../../services/CondicionesVentaService';
-import PrecioService from '../../../../services/PreciosService';
 
 interface InformacionComercialProps {
   errors: any;
+  canales: any[];
+  subcanales: any[];
   cliente: ICliente;
+  listasPrecio: any[];
+  condicionesVenta: any[];
   onChangeClienteField: (field: string, value: any) => void;
 }
 
 export default function InformacionComercial({
   errors,
   cliente,
+  canales,
+  subcanales,
+  listasPrecio,
+  condicionesVenta,
   onChangeClienteField,
 }: InformacionComercialProps): React.ReactElement {
-  const [canales, setCanales] = useState<any[]>([]);
-  const [subcanales, setSubcanales] = useState<any[]>([]);
-  const [listasPrecio, setListasPrecio] = useState<any[]>([]);
-  const [condicionesVenta, setCondicionesVenta] = useState<any[]>([]);
-
-  useEffect(() => {
-    getData();
-  }, []);
-
-  const getData = async () => {
-    const canales = await CanalesService.getCanales();
-    const subcanales = await CanalesService.getSubcanales();
-    const listasPrecio = await PrecioService.getListasPrecio();
-    const condicionesVenta =
-      await CondicionesVentaService.getCondicionesVenta();
-
-    setCanales(canales);
-    setSubcanales(subcanales);
-    setListasPrecio(listasPrecio);
-    setCondicionesVenta(condicionesVenta);
-  };
-
   const getSubcanalesByCanal = () => {
     if (cliente.canal_id) {
       return subcanales
