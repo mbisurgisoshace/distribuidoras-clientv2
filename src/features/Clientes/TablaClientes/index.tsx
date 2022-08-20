@@ -49,10 +49,6 @@ export default function TablaClientes({
     [pageIndex, pageSize]
   );
 
-  useEffect(() => {
-    onPageChange(pageIndex + 1);
-  }, [pageIndex]);
-
   const table = useReactTable({
     data,
     columns,
@@ -147,7 +143,10 @@ export default function TablaClientes({
           onNextPage={table.nextPage}
           onPreviousPage={table.previousPage}
           currentPage={table.getState().pagination.pageIndex + 1}
-          onPageChange={(pageNumber) => table.setPageIndex(pageNumber - 1)}
+          onPageChange={(pageNumber) => {
+            table.setPageIndex(pageNumber - 1);
+            onPageChange(pageNumber);
+          }}
         />
       </div>
     </div>

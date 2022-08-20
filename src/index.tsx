@@ -10,9 +10,7 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <React.StrictMode>
-    <div id="notification-container" style={{ height: '100%' }}>
-      <App />
-    </div>
-  </React.StrictMode>
+  <div id="notification-container" style={{ height: '100%' }}>
+    <App />
+  </div>
 );
