@@ -4,11 +4,13 @@ import { MenuIcon } from '@heroicons/react/outline';
 import Sidebar from './Sidebar/Sidebar';
 
 interface OuterWrapperProps {
+  fullWidth?: boolean;
   children: React.ReactNode;
 }
 
 export default function OuterWrapper({
   children,
+  fullWidth = false,
 }: OuterWrapperProps): React.ReactElement {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -31,7 +33,11 @@ export default function OuterWrapper({
         </div>
         <main className="h-full flex-1">
           <div className="py-1 sm:py-6 h-full">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 h-full">
+            <div
+              className={`${
+                fullWidth ? 'max-w-full' : 'max-w-7xl'
+              } mx-auto px-4 sm:px-6 md:px-8 h-full`}
+            >
               {children}
             </div>
           </div>

@@ -1,0 +1,114 @@
+import moment from 'moment';
+import React, { useMemo } from 'react';
+import { ColumnDef } from '@tanstack/table-core';
+
+export const useMonitorColumns = () => {
+  const columns: ColumnDef<any>[] = useMemo(
+    () => [
+      {
+        accessorKey: 'MovimientoEncID',
+        header: 'Pedido #',
+        cell: (props) => {
+          let color = '';
+          if (props.row.original.Remito) {
+            color = 'bg-red-600';
+          }
+          return (
+            <div className="flex items-center">
+              <div className={`w-2 h-2 b-ra rounded-lg ${color} mr-2`} />
+              {props.getValue() as string}
+            </div>
+          );
+        },
+      },
+      {
+        accessorKey: 'Fecha',
+        header: 'Fecha',
+        cell: (props) =>
+          moment(props.getValue() as string, 'YYYY-MM-DD').format('DD/MM/YYYY'),
+      },
+      {
+        accessorKey: 'ClienteID',
+        header: 'Razon Social',
+        cell: (props) => (
+          <>
+            <dl>
+              <span className="font-medium text-gray-800">
+                {props.getValue() as string}
+              </span>
+              <span className="truncate text-gray-700">{` - ${props.row.original.RazonSocial}`}</span>
+            </dl>
+            <dl className="font-normal">
+              <dd className="truncate text-gray-500">
+                {props.row.original.Direccion}
+              </dd>
+            </dl>
+          </>
+        ),
+      },
+      {
+        accessorKey: 'TipoMovimientoNombre',
+        header: 'Tipo',
+        cell: (props) => {
+          let color = '';
+          const tipo = props.getValue() as string;
+
+          if (tipo === 'QR') color = 'bg-red-100 text-red-800';
+          if (tipo === 'Redes') color = 'bg-blue-100 text-blue-800';
+          if (tipo === 'Voleo') color = 'bg-indigo-100 text-indigo-800';
+          if (tipo === 'Pedido') color = 'bg-yellow-100 text-yellow-800';
+          if (tipo === 'PreRuteo') color = 'bg-green-100 text-green-800';
+
+          return (
+            <span
+              className={`inline-flex rounded-full px-2 text-xs font-semibold leading-5 ${color}`}
+            >
+              {tipo}
+            </span>
+          );
+        },
+      },
+      {
+        accessorKey: 'EstadoMovimientoNombre',
+        header: 'Estado',
+        cell: (props) => {
+          let color = '';
+          const estado = props.getValue() as string;
+
+          if (estado === 'Asignado') color = 'bg-yellow-100 text-yellow-800';
+          if (estado === 'Sin Asignar') color = 'bg-gray-100 text-gray-800';
+          if (estado === 'Entregado') color = 'bg-green-100 text-green-800';
+          if (estado === 'No Entregado') color = 'bg-red-100 text-red-800';
+          if (estado === 'Rechazado') color = 'bg-orange-100 text-orange-800';
+          if (estado === 'Comunicado') color = 'bg-blue-100 text-blue-800';
+
+          return (
+            <span
+              className={`inline-flex rounded-full px-2 text-xs font-semibold leading-5 ${color}`}
+            >
+              {estado}
+            </span>
+          );
+        },
+      },
+      {
+        accessorKey: 'CondicionVentaNombre',
+        header: 'Condicion de Venta',
+        cell: (props) => props.renderValue(),
+      },
+      {
+        accessorKey: 'Apellido',
+        header: 'Chofer',
+        cell: (props) => props.renderValue(),
+      },
+      {
+        accessorKey: 'Observaciones',
+        header: 'Observaciones',
+        cell: (props) => props.renderValue(),
+      },
+    ],
+    []
+  );
+
+  return { columns };
+};
