@@ -10,7 +10,7 @@ export const useMonitorColumns = () => {
         header: 'Pedido #',
         cell: (props) => {
           let color = '';
-          if (props.row.original.Remito) {
+          if (props.row.original.Reclamo) {
             color = 'bg-red-600';
           }
           return (
