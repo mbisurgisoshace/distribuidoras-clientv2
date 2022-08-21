@@ -3,42 +3,42 @@ import { Fragment, useState } from 'react';
 import { XIcon } from '@heroicons/react/outline';
 import { Dialog, Transition } from '@headlessui/react';
 
-import Input from '../../../components/Input';
-import Multiselect from '../../../components/Multiselect';
+import Select from '../../../components/Select';
 
 import { useTablas } from '../../../hooks/useTablas';
 
-interface FilterPanelProps {
-  filters: any;
+interface ActualizacionMasivaProps {
   isOpen: boolean;
   onClose: () => void;
-  setFilters: (filters: any) => void;
-  onApplyFilter: (filters: any) => void;
+  onApplyActualizacion: (actualizaciones: any) => void;
 }
 
-export default function FilterPanel({
+export default function ActualizacionMasiva({
   isOpen,
   onClose,
-  filters,
-  setFilters,
-  onApplyFilter,
-}: FilterPanelProps): React.ReactElement {
-  // const [filters, setFilters] = useState<any>({
-  //   tipos: [],
-  //   canal: [],
-  //   estado: [],
-  //   condicion: [],
-  //   desde: moment().format('DD-MM-YYYY'),
-  //   hasta: moment().format('DD-MM-YYYY'),
-  // });
+  onApplyActualizacion,
+}: ActualizacionMasivaProps): React.ReactElement {
+  const [actualizacion, setActualizacion] = useState<any>({
+    tipo_movimiento_id: -1,
+    estado_movimiento_id: -1,
+    condicion_venta_id: -1,
+    motivo_id: -1,
+  });
 
   const { tablas } = useTablas(
-    'canales,condicionesVenta,tiposMovimiento,estadosMovimiento'
+    'condicionesVenta,tiposMovimiento,estadosMovimiento,motivos'
   );
 
-  const onFiltrar = (e: any) => {
+  const onActualizar = (e: any) => {
     e.preventDefault();
-    onApplyFilter(filters);
+    onApplyActualizacion(actualizacion);
+    onClose();
+    setActualizacion({
+      tipo_movimiento_id: -1,
+      estado_movimiento_id: -1,
+      condicion_venta_id: -1,
+      motivo_id: -1,
+    });
   };
 
   return (
@@ -63,7 +63,7 @@ export default function FilterPanel({
                     <div className="px-4 sm:px-6">
                       <div className="flex items-start justify-between">
                         <Dialog.Title className="text-lg font-medium text-indigo-600">
-                          Filtros
+                          Actualizacion Masiva
                         </Dialog.Title>
                         <div className="ml-3 flex h-7 items-center">
                           <button
@@ -79,41 +79,15 @@ export default function FilterPanel({
                     </div>
                     <form
                       className="relative mt-6 flex-1 px-4 sm:px-6"
-                      onSubmit={onFiltrar}
+                      onSubmit={onActualizar}
                     >
-                      <Input
-                        id="desde"
-                        name="desde"
-                        label="Desde"
-                        type="text"
-                        value={filters.desde}
-                        onChange={(name, value) => {
-                          setFilters({
-                            ...filters,
-                            [name]: value,
-                          });
-                        }}
-                      />
-                      <Input
-                        id="hasta"
-                        name="hasta"
-                        label="Hasta"
-                        type="text"
-                        value={filters.hasta}
-                        onChange={(name, value) => {
-                          setFilters({
-                            ...filters,
-                            [name]: value,
-                          });
-                        }}
-                      />
-                      <Multiselect
+                      <Select
                         id="estados"
-                        label="Estados"
-                        onOptionsChange={(options) => {
-                          setFilters({
-                            ...filters,
-                            estado: options,
+                        label="Estado"
+                        onOptionChange={(option) => {
+                          setActualizacion({
+                            ...actualizacion,
+                            estado_movimiento_id: option,
                           });
                         }}
                         options={tablas.estadosMovimiento.map(
@@ -122,45 +96,30 @@ export default function FilterPanel({
                             value: estado.estado_movimiento_id,
                           })
                         )}
-                        values={filters.estado}
+                        value={actualizacion.estado_movimiento_id}
                       />
-                      <Multiselect
-                        id="canales"
-                        label="Canales"
-                        onOptionsChange={(options) => {
-                          setFilters({
-                            ...filters,
-                            canal: options,
-                          });
-                        }}
-                        options={tablas.canales.map((canal: any) => ({
-                          label: canal.canal_nombre,
-                          value: canal.canal_id,
-                        }))}
-                        values={filters.canal}
-                      />
-                      <Multiselect
+                      <Select
                         id="tipos"
-                        label="Tipos Movimiento"
-                        onOptionsChange={(options) => {
-                          setFilters({
-                            ...filters,
-                            tipos: options,
+                        label="Tipo de Movimiento"
+                        onOptionChange={(option) => {
+                          setActualizacion({
+                            ...actualizacion,
+                            tipo_movimiento_id: option,
                           });
                         }}
                         options={tablas.tiposMovimiento.map((tipo: any) => ({
                           label: tipo.tipo_movimiento_nombre,
                           value: tipo.tipo_movimiento_id,
                         }))}
-                        values={filters.tipos}
+                        value={actualizacion.tipo_movimiento_id}
                       />
-                      <Multiselect
+                      <Select
                         id="condiciones"
-                        label="Condiciones de Venta"
-                        onOptionsChange={(options) => {
-                          setFilters({
-                            ...filters,
-                            condicion: options,
+                        label="Condicion de Venta"
+                        onOptionChange={(option) => {
+                          setActualizacion({
+                            ...actualizacion,
+                            condicion_venta_id: option,
                           });
                         }}
                         options={tablas.condicionesVenta.map(
@@ -169,14 +128,29 @@ export default function FilterPanel({
                             value: condicion.condicion_venta_id,
                           })
                         )}
-                        values={filters.condicion}
+                        value={actualizacion.condicion_venta_id}
+                      />
+                      <Select
+                        id="motivos"
+                        label="Motivo"
+                        onOptionChange={(option) => {
+                          setActualizacion({
+                            ...actualizacion,
+                            motivo_id: option,
+                          });
+                        }}
+                        options={tablas.motivos.map((motivo: any) => ({
+                          label: motivo.motivo_nombre,
+                          value: motivo.motivo_id,
+                        }))}
+                        value={actualizacion.motivo_id}
                       />
                       <button
                         type="submit"
                         //disabled={isLoading}
                         className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                       >
-                        Buscar
+                        Actualizar
                       </button>
                     </form>
                   </div>

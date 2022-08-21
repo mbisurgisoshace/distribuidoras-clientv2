@@ -50,7 +50,6 @@ export default function Sidebar({
       children: [
         { name: 'Hojas de Ruta', href: '#' },
         { name: 'Nuevo Pedido', href: '#' },
-        { name: 'Monitor de Pedidos', href: '#' },
       ],
     },
     { name: 'Comodatos', icon: CollectionIcon, current: false, href: '#' },

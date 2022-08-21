@@ -6,6 +6,31 @@ export const useMonitorColumns = () => {
   const columns: ColumnDef<any>[] = useMemo(
     () => [
       {
+        id: 'select',
+        header: ({ table }) => (
+          <input
+            readOnly
+            id="select"
+            name="select"
+            type="checkbox"
+            checked={table.getIsAllRowsSelected()}
+            onChange={table.getToggleAllRowsSelectedHandler()}
+            className="mr-2 focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+          />
+        ),
+        cell: ({ row }) => (
+          <input
+            readOnly
+            id="select"
+            name="select"
+            type="checkbox"
+            checked={row.getIsSelected()}
+            onChange={row.getToggleSelectedHandler()}
+            className="mr-2 focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+          />
+        ),
+      },
+      {
         accessorKey: 'MovimientoEncID',
         header: 'Pedido #',
         cell: (props) => {
