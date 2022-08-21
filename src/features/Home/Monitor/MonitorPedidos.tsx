@@ -11,17 +11,20 @@ import {
   getSortedRowModel,
 } from '@tanstack/react-table';
 
-import data from './data.json';
 import HeaderCell from './Cells/HeaderCell';
 import { useMonitorColumns } from './useMonitorColumns';
 import DataCell from './Cells/DataCell';
 
-export default function MonitorPedidos() {
+interface MonitorPedidosProps {
+  data: any[];
+}
+
+export default function MonitorPedidos({ data }: MonitorPedidosProps) {
   const { columns } = useMonitorColumns();
   const [sorting, setSorting] = useState<SortingState>([]);
 
   const table = useReactTable({
-    data: data,
+    data,
     columns,
     state: {
       sorting,
