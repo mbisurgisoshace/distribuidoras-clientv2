@@ -92,6 +92,11 @@ export const useMonitorColumns = () => {
         },
       },
       {
+        accessorKey: 'CanalNombre',
+        header: 'Canal',
+        cell: (props) => props.renderValue(),
+      },
+      {
         accessorKey: 'CondicionVentaNombre',
         header: 'Condicion de Venta',
         cell: (props) => props.renderValue(),

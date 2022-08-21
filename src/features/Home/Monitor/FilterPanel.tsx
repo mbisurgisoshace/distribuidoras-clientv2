@@ -4,6 +4,9 @@ import { XIcon } from '@heroicons/react/outline';
 import { Dialog, Transition } from '@headlessui/react';
 
 import Input from '../../../components/Input';
+import Multiselect from '../../../components/Multiselect';
+
+import { useTablas } from '../../../hooks/useTablas';
 
 interface FilterPanelProps {
   isOpen: boolean;
@@ -16,10 +19,18 @@ export default function FilterPanel({
   onClose,
   onApplyFilter,
 }: FilterPanelProps): React.ReactElement {
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<any>({
+    tipos: [],
+    canal: [],
+    estado: [],
+    condicion: [],
     desde: moment().format('DD-MM-YYYY'),
     hasta: moment().format('DD-MM-YYYY'),
   });
+
+  const { tablas } = useTablas(
+    'canales,condicionesVenta,tiposMovimiento,estadosMovimiento'
+  );
 
   const onFiltrar = (e: any) => {
     e.preventDefault();
@@ -91,6 +102,70 @@ export default function FilterPanel({
                             [name]: value,
                           });
                         }}
+                      />
+                      <Multiselect
+                        id="estados"
+                        label="Estados"
+                        onOptionsChange={(options) => {
+                          setFilters({
+                            ...filters,
+                            estado: options,
+                          });
+                        }}
+                        options={tablas.estadosMovimiento.map(
+                          (estado: any) => ({
+                            label: estado.estado_movimiento_nombre,
+                            value: estado.estado_movimiento_id,
+                          })
+                        )}
+                        values={filters.estado}
+                      />
+                      <Multiselect
+                        id="canales"
+                        label="Canales"
+                        onOptionsChange={(options) => {
+                          setFilters({
+                            ...filters,
+                            canal: options,
+                          });
+                        }}
+                        options={tablas.canales.map((canal: any) => ({
+                          label: canal.canal_nombre,
+                          value: canal.canal_id,
+                        }))}
+                        values={filters.canal}
+                      />
+                      <Multiselect
+                        id="tipos"
+                        label="Tipos Movimiento"
+                        onOptionsChange={(options) => {
+                          setFilters({
+                            ...filters,
+                            tipos: options,
+                          });
+                        }}
+                        options={tablas.tiposMovimiento.map((tipo: any) => ({
+                          label: tipo.tipo_movimiento_nombre,
+                          value: tipo.tipo_movimiento_id,
+                        }))}
+                        values={filters.tipos}
+                      />
+                      <Multiselect
+                        id="condiciones"
+                        label="Condiciones de Venta"
+                        onOptionsChange={(options) => {
+                          setFilters({
+                            ...filters,
+                            condicion: options,
+                          });
+                        }}
+                        options={tablas.condicionesVenta.map(
+                          (condicion: any) => ({
+                            label: condicion.condicion_venta_nombre,
+                            value: condicion.condicion_venta_id,
+                          })
+                        )}
+                        values={filters.condicion}
                       />
                       <button
                         type="submit"

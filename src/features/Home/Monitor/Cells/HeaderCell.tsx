@@ -17,6 +17,7 @@ export default function HeaderCell({
       return 'w-96 min-w-[24rem] max-w-[24rem] px-3 py-3.5  text-left text-sm font-semibold text-gray-900 ';
 
     if (
+      columnId === 'CanalNombre' ||
       columnId === 'TipoMovimientoNombre' ||
       columnId === 'CondicionVentaNombre' ||
       columnId === 'EstadoMovimientoNombre' ||

@@ -19,6 +19,7 @@ export default function DataCell({
       return 'w-96 min-w-[24rem] max-w-[24rem] px-3 py-1 text-sm text-gray-500';
 
     if (
+      columnId === 'CanalNombre' ||
       columnId === 'TipoMovimientoNombre' ||
       columnId === 'CondicionVentaNombre' ||
       columnId === 'EstadoMovimientoNombre' ||
