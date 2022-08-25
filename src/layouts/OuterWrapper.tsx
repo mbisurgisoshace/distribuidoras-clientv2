@@ -31,7 +31,7 @@ export default function OuterWrapper({
             <MenuIcon className="h-6 w-6" aria-hidden="true" />
           </button>
         </div>
-        <main className="h-full flex-1">
+        <main className="main-mobile sm:h-full sm:flex-1">
           <div className="py-1 sm:py-6 h-full">
             <div
               className={`${

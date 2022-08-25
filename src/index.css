@@ -5,3 +5,9 @@
 html, body {
   height: -webkit-fill-available;
 }
+
+@layer components {
+  .main-mobile {
+    height: calc(100% - 50px);
+  }
+}
