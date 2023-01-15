@@ -4,6 +4,7 @@ import { ICliente } from '../types/Cliente';
 export default class ClientesService extends BaseService {
   static clientesRoute = '/clientes';
   static clienteRoute = '/clientes/{cliente_id}';
+  static queryClientesRoute = '/clientes/search';
   static searchClientesRoute = '/clientes/filter';
   static clientePedidosRoute = '/clientes/{cliente_id}/lastPedidos';
 
@@ -46,6 +47,14 @@ export default class ClientesService extends BaseService {
         pageSize,
         currentPage,
       }
+    );
+  }
+
+  public static async queryClientes(
+    filterText: string
+  ): Promise<Array<ICliente>> {
+    return await this.getRequest<Array<ICliente>>(
+      this.buildQueryRoute(this.queryClientesRoute, { query: filterText })
     );
   }
 
