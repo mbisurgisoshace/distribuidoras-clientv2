@@ -140,8 +140,14 @@ export default function TablaClientes({
           pageSize={50}
           siblingsCount={1}
           totalCount={total}
-          onNextPage={table.nextPage}
-          onPreviousPage={table.previousPage}
+          onNextPage={() => {
+            table.nextPage();
+            onPageChange(pagination.pageIndex + 1);
+          }}
+          onPreviousPage={() => {
+            table.previousPage();
+            onPageChange(pagination.pageIndex + 1);
+          }}
           currentPage={table.getState().pagination.pageIndex + 1}
           onPageChange={(pageNumber) => {
             table.setPageIndex(pageNumber - 1);

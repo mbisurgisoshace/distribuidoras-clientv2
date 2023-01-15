@@ -18,6 +18,7 @@ export default function Clientes() {
     pageSize: number,
     currentPage: number
   ) => {
+    console.log('currentPage', currentPage);
     setIsLoadingClientes(true);
     const clientes = await ClientesService.searchClientes(
       filterText,
