@@ -20,4 +20,5 @@ export interface ICliente {
   condicion_venta_id: number | null;
   lista_precio_id: number | null;
   observaciones: string;
+  estado: boolean;
 }

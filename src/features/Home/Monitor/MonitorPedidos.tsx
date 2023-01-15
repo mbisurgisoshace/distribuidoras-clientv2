@@ -45,8 +45,8 @@ export default function MonitorPedidos({
     canal: [],
     estado: [],
     condicion: [],
-    desde: moment().format('DD-MM-YYYY'),
-    hasta: moment().format('DD-MM-YYYY'),
+    desde: new Date(),
+    hasta: new Date(),
   });
   const [sorting, setSorting] = useState<SortingState>([]);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
@@ -152,7 +152,11 @@ export default function MonitorPedidos({
         isOpen={isFiltersOpen}
         setFilters={setFilters}
         onApplyFilter={(filters) => {
-          onSearch(filters);
+          onSearch({
+            ...filters,
+            desde: moment(filters.desde).format('DD-MM-YYYY'),
+            hasta: moment(filters.hasta).format('DD-MM-YYYY'),
+          });
           setIsFiltersOpen(false);
         }}
         onClose={() => setIsFiltersOpen(false)}

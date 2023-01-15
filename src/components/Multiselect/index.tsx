@@ -14,6 +14,7 @@ interface MultiselectProps {
   label: string;
   error?: string;
   options: Option[];
+  showsError?: boolean;
   values: number[] | string[];
   onOptionsChange: (values: number[] | string[]) => void;
 }
@@ -25,6 +26,7 @@ export default function Multiselect({
   values,
   options,
   onOptionsChange,
+  showsError = true,
 }: MultiselectProps): React.ReactElement {
   const getOptions = useCallback(
     (optionsId: any) => {
@@ -113,9 +115,11 @@ export default function Multiselect({
                 ))}
               </Listbox.Options>
             </Transition>
-            <p className="mt-1 text-xs text-red-600 h-4" id={id}>
-              {error || ' '}
-            </p>
+            {showsError && (
+              <p className="mt-1 text-xs text-red-600 h-4" id={id}>
+                {error || ' '}
+              </p>
+            )}
           </div>
         </>
       )}

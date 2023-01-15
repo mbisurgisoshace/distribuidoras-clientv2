@@ -4,6 +4,7 @@ import Input from '../../../../components/Input';
 import ClienteMap from './ClienteMap/ClienteMap';
 import Select from '../../../../components/Select';
 import { ICliente } from '../../../../types/Cliente';
+import Switch from '../../../../components/Switch';
 
 interface InformacionGeneralProps {
   errors: any;
@@ -229,6 +230,15 @@ export default function InformacionGeneral({
                 value={cliente.observaciones || ''}
                 onChange={onChangeClienteField}
                 disabled
+              />
+            </div>
+            <div className="col-span-6">
+              <Switch
+                id="estado"
+                name="estado"
+                label="Estado"
+                value={cliente.estado}
+                onChange={onChangeClienteField}
               />
             </div>
           </div>

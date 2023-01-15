@@ -27,6 +27,7 @@ const initData: ICliente = {
   condicion_venta_id: null,
   lista_precio_id: null,
   observaciones: '',
+  estado: true,
 };
 
 export const useClienteForm = (clienteId: any) => {

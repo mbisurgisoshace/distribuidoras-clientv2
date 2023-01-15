@@ -4,6 +4,7 @@ import { XIcon } from '@heroicons/react/outline';
 import { Dialog, Transition } from '@headlessui/react';
 
 import Input from '../../../components/Input';
+import Datepicker from '../../../components/Datepicker';
 import Multiselect from '../../../components/Multiselect';
 
 import { useTablas } from '../../../hooks/useTablas';
@@ -23,15 +24,6 @@ export default function FilterPanel({
   setFilters,
   onApplyFilter,
 }: FilterPanelProps): React.ReactElement {
-  // const [filters, setFilters] = useState<any>({
-  //   tipos: [],
-  //   canal: [],
-  //   estado: [],
-  //   condicion: [],
-  //   desde: moment().format('DD-MM-YYYY'),
-  //   hasta: moment().format('DD-MM-YYYY'),
-  // });
-
   const { tablas } = useTablas(
     'canales,condicionesVenta,tiposMovimiento,estadosMovimiento'
   );
@@ -81,29 +73,27 @@ export default function FilterPanel({
                       className="relative mt-6 flex-1 px-4 sm:px-6"
                       onSubmit={onFiltrar}
                     >
-                      <Input
+                      <Datepicker
                         id="desde"
                         name="desde"
                         label="Desde"
-                        type="text"
                         value={filters.desde}
-                        onChange={(name, value) => {
+                        onChange={(date) => {
                           setFilters({
                             ...filters,
-                            [name]: value,
+                            desde: date,
                           });
                         }}
                       />
-                      <Input
+                      <Datepicker
                         id="hasta"
                         name="hasta"
                         label="Hasta"
-                        type="text"
                         value={filters.hasta}
-                        onChange={(name, value) => {
+                        onChange={(date) => {
                           setFilters({
                             ...filters,
-                            [name]: value,
+                            hasta: date,
                           });
                         }}
                       />
