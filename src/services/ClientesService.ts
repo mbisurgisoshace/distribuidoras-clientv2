@@ -1,5 +1,5 @@
 import BaseService from './baseService';
-import { ICliente } from '../types/Cliente';
+import { ICliente, IClienteView } from '../types/Cliente';
 
 export default class ClientesService extends BaseService {
   static clientesRoute = '/clientes';
@@ -52,8 +52,8 @@ export default class ClientesService extends BaseService {
 
   public static async queryClientes(
     filterText: string
-  ): Promise<Array<ICliente>> {
-    return await this.getRequest<Array<ICliente>>(
+  ): Promise<Array<IClienteView>> {
+    return await this.getRequest<Array<IClienteView>>(
       this.buildQueryRoute(this.queryClientesRoute, { query: filterText })
     );
   }

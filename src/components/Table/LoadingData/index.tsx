@@ -16,6 +16,7 @@ export default function LoadingData() {
         left: '50%',
         position: 'absolute',
         transform: 'translate(-50%, -50%)',
+        zIndex: 999
       }}
       width={75}
       height={75}

@@ -5,7 +5,7 @@ import { DivIcon, Marker as IMarker } from 'leaflet';
 interface DraggableMarkerProps {
   lat: number;
   lng: number;
-  onLocationChanged: (
+  onLocationChanged?: (
     lat: number,
     lng: number,
     calle?: string,
@@ -30,7 +30,7 @@ export default function DraggableMarker({
         const marker = markerRef.current;
         if (marker) {
           const { lat, lng } = marker.getLatLng();
-          onLocationChanged(lat, lng);
+          if (onLocationChanged) onLocationChanged(lat, lng);
         }
       },
     }),
@@ -41,8 +41,8 @@ export default function DraggableMarker({
 
   return (
     <Marker
-      draggable
       eventHandlers={eventHandlers}
+      draggable={!!onLocationChanged}
       position={{ lat, lng }}
       ref={markerRef}
       icon={new DivIcon({ className: 'clienteMarker' })}

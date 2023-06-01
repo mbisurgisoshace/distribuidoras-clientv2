@@ -1,4 +1,5 @@
 import moment from 'moment';
+import numeral from 'numeral';
 import React, { useMemo } from 'react';
 import { ColumnDef } from '@tanstack/table-core';
 
@@ -115,6 +116,28 @@ export const useMonitorColumns = () => {
             </span>
           );
         },
+      },
+      {
+        accessorKey: 'Detalle',
+        header: 'Detalle',
+        cell: (props) => {
+          return (
+            <div className={'w-64'} >
+              {props.renderValue() as string}
+            </div>
+          )
+        }
+      },
+      {
+        accessorKey: 'Total',
+        header: 'Total',
+        cell: (props) => {
+          return (
+            <div className={'w-32'}>
+              {numeral(props.renderValue()).format('$0,0.00')}
+            </div>
+          )
+        }
       },
       {
         accessorKey: 'CanalNombre',

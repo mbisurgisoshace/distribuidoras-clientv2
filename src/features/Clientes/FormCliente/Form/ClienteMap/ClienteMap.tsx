@@ -6,9 +6,9 @@ import SearchField from './SearchField';
 import DraggableMarker from './DraggableMarker';
 
 interface ClienteMapProps {
-  lat: number;
-  lng: number;
-  onLocationChanged: (
+  lat?: number;
+  lng?: number;
+  onLocationChanged?: (
     lat: number,
     lng: number,
     calle?: string,
@@ -35,7 +35,7 @@ export default function ClienteMap({
           lng || parseFloat(process.env.REACT_APP_LONGITUDE || ''),
         ]}
       >
-        <SearchField onLocationChanged={onLocationChanged} />
+        {onLocationChanged && <SearchField onLocationChanged={onLocationChanged} />}
         <TileLayer
           url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

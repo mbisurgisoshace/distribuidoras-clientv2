@@ -11,23 +11,17 @@ interface Option {
 
 interface SelectProps {
   id: string;
-  label: string;
-  error?: string;
   options: Option[];
-  withError?: boolean;
   value: number | string;
   onOptionChange: (value: number | string) => void;
 }
 
-export default function Select({
-  id,
-  label,
-  value,
-  error,
-  options,
-  onOptionChange,
-  withError = true,
-}: SelectProps): React.ReactElement {
+export default function TableSelect({
+                                 id,
+                                 value,
+                                 options,
+                                 onOptionChange,
+                               }: SelectProps): React.ReactElement {
   const getOption = useCallback(
     (optionId: number | string) => {
       return options.find((option) => option.value === optionId);
@@ -55,10 +49,7 @@ export default function Select({
     >
       {({ open }) => (
         <>
-          <Listbox.Label className="block text-sm font-medium text-gray-700">
-            {label}
-          </Listbox.Label>
-          <div className="mt-1 relative">
+          <div className="relative">
             <Listbox.Button className="bg-white relative w-full border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
               <span className="block truncate">
                 {selected ? selected.label : 'Seleccionar...'}
@@ -117,11 +108,6 @@ export default function Select({
                 ))}
               </Listbox.Options>
             </Transition>
-            {withError && (
-              <p className="mt-1 text-xs text-red-600 h-4" id={id}>
-                {error || ' '}
-              </p>
-            )}
           </div>
         </>
       )}

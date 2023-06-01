@@ -6,6 +6,7 @@ export default class MovimientosService extends BaseService {
     '/movimientos/movimiento/{movimiento_enc_id}/detalle';
   static movimientosActualizacionMasivaRoute =
     '/movimientos/actualizacion_masiva';
+  static movimientosRoute = '/movimientos'
 
   public static async getDetalleMovimiento(movimientoId: number): Promise<any> {
     return await this.getRequest<any[]>(
@@ -22,6 +23,12 @@ export default class MovimientosService extends BaseService {
     );
   }
 
+  public static async createMovimiento(pedido: any) {
+    return await this.postJSONRequest<any, any>(
+      this.movimientosRoute,
+      pedido
+    );
+  }
   public static async updateMovimientosMasivo(actualizacion: any) {
     return await this.putJSONRequest(
       this.movimientosActualizacionMasivaRoute,

@@ -49,7 +49,7 @@ export default function Sidebar({
       current: false,
       children: [
         { name: 'Hojas de Ruta', href: '#' },
-        { name: 'Nuevo Pedido', href: '#' },
+        { name: 'Nuevo Pedido', href: '/pedidos/new' },
       ],
     },
     { name: 'Comodatos', icon: CollectionIcon, current: false, href: '#' },

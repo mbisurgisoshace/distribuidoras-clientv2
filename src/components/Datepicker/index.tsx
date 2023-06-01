@@ -93,7 +93,7 @@ export default function Datepicker({
           options: {
             offset: [0, -25],
           },
-        },
+        }
       ]}
     />
   );

@@ -22,3 +22,9 @@ export interface ICliente {
   observaciones: string;
   estado: boolean;
 }
+
+export interface IClienteView extends ICliente{
+  sub_zona_id: number | null;
+  sub_zona_nombre: string | null;
+  canal_nombre: string | null;
+}

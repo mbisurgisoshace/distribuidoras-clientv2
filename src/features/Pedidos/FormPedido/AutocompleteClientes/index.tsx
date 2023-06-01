@@ -1,33 +1,32 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Combobox } from '@headlessui/react';
-import Spinner from '../Spinner';
-import { SearchIcon } from '@heroicons/react/outline';
 
-interface Option {
-  label: string;
-  value: number | string;
-}
+import { SearchIcon, XIcon } from '@heroicons/react/outline';
+import { ICliente, IClienteView } from '../../../../types/Cliente';
+import Spinner from '../../../../components/Spinner';
 
-interface AutocompleteProps {
+interface AutocompleteClientesProps {
   label?: string;
   loading?: boolean;
-  options: Option[];
+  onClear: () => void;
+  options: IClienteView[];
   placeholder?: string;
-  value: number | string;
+  value: IClienteView | undefined;
   onQueryChange: (value: string) => void;
-  onOptionChange: (value: number | string) => void;
+  onOptionChange: (cliente: IClienteView) => void;
 }
 
-export default function Autocomplete({
+export default function AutocompleteClientes({
   value,
   label,
   options,
   loading,
+  onClear,
   placeholder,
   onQueryChange,
   onOptionChange,
-}: AutocompleteProps): React.ReactElement {
+}: AutocompleteClientesProps): React.ReactElement {
   return (
     <Combobox as="div" value={value} onChange={onOptionChange}>
       {label && (
@@ -43,7 +42,7 @@ export default function Autocomplete({
           <Combobox.Input
             placeholder={placeholder}
             className="w-full rounded-md border border-gray-300 bg-white py-2 pl-10 pr-10 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
-            displayValue={(option: Option) => option.label}
+            displayValue={(option: ICliente) => option?.razon_social || ''}
             onChange={(event) => onQueryChange(event.target.value)}
           />
           {loading && (
@@ -51,12 +50,21 @@ export default function Autocomplete({
               <Spinner />
             </div>
           )}
+          {!loading && (
+            <div className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer">
+              <XIcon
+                aria-hidden="true"
+                onClick={onClear}
+                className="h-5 w-5 text-gray-400"
+              />
+            </div>
+          )}
         </div>
         {options.length > 0 && (
           <Combobox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
             {options.map((option) => (
               <Combobox.Option
-                key={option.value}
+                key={option.cliente_id}
                 value={option}
                 className={({ active }) =>
                   classNames(
@@ -75,9 +83,9 @@ export default function Autocomplete({
                     >
                       <div style={{ display: 'flex', flexDirection: 'column' }}>
                         <h6 className="text-gray-400 font-semibold">
-                          {option.value}
+                          {option.cliente_id}
                         </h6>
-                        {option.label}
+                        {option.razon_social}
                       </div>
                     </span>
 
