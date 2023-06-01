@@ -95,7 +95,7 @@ export default function Select({
                         <span
                           className={classNames(
                             selected ? 'font-semibold' : 'font-normal',
-                            'block truncate'
+                            'block'
                           )}
                         >
                           {option.label}
