@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 
 import { IClienteView } from '../../../types/Cliente';
@@ -24,8 +24,10 @@ import CondicionesVentaService from '../../../services/CondicionesVentaService';
 import MovimientosService from '../../../services/MovimientosService';
 import toaster from '../../../components/Toast/toaster';
 import LoadingData from '../../../components/Table/LoadingData';
+import PrecioService from '../../../services/PreciosService';
 
 export default function FormPedido(): React.ReactElement {
+  const navigate = useNavigate();
   const { pedidoId } = useParams();
   const [query, setQuery] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -48,6 +50,7 @@ export default function FormPedido(): React.ReactElement {
   const [tiposPedido, setTiposPedido] = useState<TipoMovimiento[]>([]);
   const [estadosPedido, setEstadosPedido] = useState<EstadoMovimiento[]>([]);
   const [condicionesVenta, setCondicionesVenta] = useState<any[]>([]);
+  const [precios, setPrecios] = useState<any[]>([]);
   const [coords, setCoords] = useState<{lat: number | undefined, lng: number | undefined}>({lat: undefined, lng: undefined})
 
   useEffect(() => {
@@ -70,6 +73,7 @@ export default function FormPedido(): React.ReactElement {
     const hojas = await HojasService.getHojasByEstado(1);
     setHojas(hojas);
   }
+
   const getProductos = async () => {
     const productos = await ProductosService.getProductos();
     setProductos(productos);
@@ -96,12 +100,14 @@ export default function FormPedido(): React.ReactElement {
     setClientes(clientes);
   };
 
-  const onSelectCliente = (cliente: IClienteView) => {
+  const onSelectCliente = async (cliente: IClienteView) => {
     console.log(cliente);
+    const precios = await PrecioService.getPrecios(cliente.lista_precio_id!);
     setPedido({
       ...pedido,
       cliente_id: cliente.cliente_id
     })
+    setPrecios(precios);
     setSelectedCliente(cliente);
     setCoords({lat: cliente.latitud, lng: cliente.longitud})
   };
@@ -123,9 +129,17 @@ export default function FormPedido(): React.ReactElement {
     const row = pedido.items[index];
     row[key] = value;
 
+    if (key === 'envase_id') {
+      const precioProducto = precios.find(precio => precio.envase_id === value);
+      if (precioProducto) {
+        row.precio = precioProducto.precio;
+      }
+    }
+
+    const precio = parseFloat(row.precio || 0);
+    const cantidad = parseFloat(row.cantidad || 0);
+
     if (key === 'cantidad' || key === 'precio') {
-      const precio = parseFloat(row.precio || 0);
-      const cantidad = parseFloat(row.cantidad || 0);
       row.monto = precio * cantidad;
     }
     setPedido({
@@ -151,7 +165,26 @@ export default function FormPedido(): React.ReactElement {
 
     try {
       const pedidoId = await MovimientosService.createMovimiento(pedido);
-      console.log(pedidoId);
+      toaster().success({
+        title: 'Pedido generado correctamente!',
+        infoText: `El numero de pedido es ${pedidoId}.`,
+      });
+
+      setQuery('');
+      setPedido({
+        cliente_id: null,
+        hoja_ruta_id: null,
+        fecha: moment().format('DD-MM-YYYY'),
+        tipo_movimiento_id: 2,
+        estado_movimiento_id: 2,
+        condicion_venta_id: null,
+        visito: false,
+        vendio: false,
+        observaciones: '',
+        items: []
+      })
+      setSelectedCliente(undefined);
+      setCoords({lat: undefined, lng: undefined});
     } catch (err) {
       toaster().error({
         title: 'Ha ocurrido un error!',
