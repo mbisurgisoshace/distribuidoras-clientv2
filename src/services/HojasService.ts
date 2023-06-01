@@ -1,12 +1,13 @@
 import BaseService from './baseService';
-import { EstadoMovimiento } from '../types/Pedidos';
+
+import { Hoja } from '../types/Hoja';
 
 export default class HojasService extends BaseService {
   static hojasByEstadoRoute = '/hojas/estado/{estado}';
 
-  public static async getHojasByEstado(estado: number): Promise<Array<any>> {
-    return await this.getRequest<any[]>(
-      this.buildRoute(this.hojasByEstadoRoute, { estado: 1 })
+  public static async getHojasByEstado(estado: number): Promise<Array<Hoja>> {
+    return await this.getRequest<Array<Hoja>>(
+      this.buildRoute(this.hojasByEstadoRoute, { estado })
     );
   }
 }

@@ -4,7 +4,7 @@ import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
 
 import { classNames } from '../../layouts/utils';
 
-interface Option {
+export interface Option {
   label: string;
   value: number | string;
 }

@@ -85,7 +85,7 @@ export default function AutocompleteClientes({
                         <h6 className="text-gray-400 font-semibold">
                           {option.cliente_id}
                         </h6>
-                        {option.razon_social}
+                        {`${option.razon_social} - ${option.calle} ${option.altura}`}
                       </div>
                     </span>
 

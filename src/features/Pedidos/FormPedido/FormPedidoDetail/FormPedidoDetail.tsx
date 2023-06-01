@@ -3,12 +3,13 @@ import TableSelect from '../../../../components/Table/TableSelect';
 import NumberInput from '../../../../components/Table/NumberInput';
 import CurrencyInput from '../../../../components/Table/CurrencyInput';
 import { MinusIcon } from '@heroicons/react/solid';
+import { ItemPedido } from '../../../../types/Pedidos';
 
 interface FormPedidoDetailProps {
   items: any;
   productos: any[];
   onRemoveItem: (idx: number) => void;
-  onEditItem: (key: string, index: number, value: any) => void;
+  onEditItem: (key: keyof ItemPedido, index: number, value: any) => void;
 }
 export default function FormPedidoDetail({items, productos, onEditItem, onRemoveItem}: FormPedidoDetailProps): React.ReactElement {
   const productosOptions = productos.map((producto) => ({
@@ -33,10 +34,10 @@ export default function FormPedidoDetail({items, productos, onEditItem, onRemove
             <TableSelect id='envase_id' value={item.envase_id} options={productosOptions} onOptionChange={(value) => onEditItem('envase_id', idx, value)} />
           </td>
           <td className='p-1'>
-            <NumberInput id={'cantidad'} name={'cantidad'} value={item.cantidad} onChange={(name, value) => onEditItem(name, idx, value)} />
+            <NumberInput id={'cantidad'} name={'cantidad'} value={item.cantidad} onChange={(name, value) => onEditItem('cantidad', idx, value)} />
           </td>
           <td className='p-1'>
-            <CurrencyInput id={'cantidad'} name={'precio'} value={item.precio} onChange={(name, value) => onEditItem(name, idx, value)} />
+            <CurrencyInput id={'cantidad'} name={'precio'} value={item.precio} onChange={(name, value) => onEditItem('precio', idx, value)} />
           </td>
           <td className='p-1'>
             <CurrencyInput id={'monto'} name={'monto'} value={item.monto} onChange={(name, value) => {}} disabled />
