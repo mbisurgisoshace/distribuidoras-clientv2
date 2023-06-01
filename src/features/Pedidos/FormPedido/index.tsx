@@ -105,7 +105,8 @@ export default function FormPedido(): React.ReactElement {
     const precios = await PrecioService.getPrecios(cliente.lista_precio_id!);
     setPedido({
       ...pedido,
-      cliente_id: cliente.cliente_id
+      cliente_id: cliente.cliente_id,
+      condicion_venta_id: cliente.condicion_venta_id
     })
     setPrecios(precios);
     setSelectedCliente(cliente);
@@ -256,7 +257,8 @@ export default function FormPedido(): React.ReactElement {
                     setQuery('');
                     setPedido({
                       ...pedido,
-                      cliente_id: null
+                      cliente_id: null,
+                      condicion_venta_id: null,
                     })
                     setSelectedCliente(undefined);
                     setCoords({lat: undefined, lng: undefined});
