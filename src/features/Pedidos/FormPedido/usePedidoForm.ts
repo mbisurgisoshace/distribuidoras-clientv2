@@ -9,10 +9,11 @@ import EstadoMovimientosService from '../../../services/EstadoMovimientosService
 import CondicionesVentaService from '../../../services/CondicionesVentaService';
 import { CondicionVenta } from '../../../types/CondicionVenta';
 import ProductosService from '../../../services/ProductosService';
-import { IClienteView } from '../../../types/Cliente';
+import { ICliente, IClienteView } from '../../../types/Cliente';
 import PrecioService from '../../../services/PreciosService';
 import MovimientosService from '../../../services/MovimientosService';
 import toaster from '../../../components/Toast/toaster';
+import ClientesService from '../../../services/ClientesService';
 
 const initData: Pedido = {
   cliente_id: null,
@@ -31,7 +32,7 @@ type Coords = {
   lat: number | undefined,
   lng: number | undefined
 }
-export const usePedidoForm = () => {
+export const usePedidoForm = (pedidoId: any) => {
   const [query, setQuery] = useState('');
   const [pedido, setPedido] = useState<Pedido>(initData);
   const [hojas, setHojas] = useState<Hoja[]>([]);
@@ -52,12 +53,30 @@ export const usePedidoForm = () => {
     init()
   }, [])
   const init = async () => {
+    if (pedidoId && !isNaN(parseInt(pedidoId))) {
+      const pedido = await getPedido(pedidoId);
+      await getCliente(pedido.cliente_id);
+      setPedido(pedido);
+    } else {
+      setPedido(initData)
+    }
     await Promise.all([getHojas(), getProductos(), getTiposPedido(), getEstadosPedido(), getCondicionesVenta()])
     setIsLoading(false);
   }
   const getHojas = async () => {
     const hojas = await HojasService.getHojasByEstado(1);
     setHojas(hojas);
+  }
+
+  const getCliente = async (clienteId: number) => {
+    const cliente = await ClientesService.getCliente(clienteId);
+    const precios = await PrecioService.getPrecios(cliente.lista_precio_id!);
+    setPrecios(precios);
+    setSelectedCliente(cliente as IClienteView);
+    setCoords({ lat: cliente.latitud, lng: cliente.longitud });
+  }
+  const getPedido = async (pedidoId: number) => {
+    return await MovimientosService.getMovimiento(pedidoId);
   }
 
   const getProductos = async () => {
@@ -81,7 +100,6 @@ export const usePedidoForm = () => {
   }
 
   const onSelectCliente = async (cliente: IClienteView) => {
-    console.log(cliente);
     const precios = await PrecioService.getPrecios(cliente.lista_precio_id!);
     setPedido({
       ...pedido,
@@ -163,6 +181,25 @@ export const usePedidoForm = () => {
     setIsLoading(false);
   };
 
+  const onEditarPedido = async () => {
+    setIsLoading(true);
+
+    try {
+      await MovimientosService.updateMovimiento(pedido.movimiento_enc_id!, pedido);
+      toaster().success({
+        title: 'Actualizado correctamente!',
+        infoText: 'El pedido fue actualizado correctamente.'
+      });
+    } catch (err) {
+      toaster().error({
+        title: 'Ha ocurrido un error!',
+        infoText: 'El pedido no se ha podido guardar.'
+      });
+    }
+
+    setIsLoading(false);
+  }
+
   const onConfirmarNuevoPedido = () => {
     setQuery('');
     setPedido({
@@ -191,7 +228,7 @@ export const usePedidoForm = () => {
     value: -1,
     label: 'Sin Chofer'
   })
-
+  console.log(pedido);
   return {
     query,
     coords,
@@ -208,6 +245,7 @@ export const usePedidoForm = () => {
     onRemoveItem,
     hojasOptions,
     onCrearPedido,
+    onEditarPedido,
     onSelectCliente,
     selectedCliente,
     onConfirmarNuevoPedido,

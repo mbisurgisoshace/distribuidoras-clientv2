@@ -7,7 +7,15 @@ export default class MovimientosService extends BaseService {
   static movimientosActualizacionMasivaRoute =
     '/movimientos/actualizacion_masiva';
   static movimientosRoute = '/movimientos'
+  static movimientoRoute = '/movimientos/movimiento/{movimiento_enc_id}'
 
+  public static async getMovimiento(movimientoId: number): Promise<any> {
+    return await this.getRequest<any[]>(
+      this.buildRoute(this.movimientoRoute, {
+        movimiento_enc_id: movimientoId,
+      })
+    );
+  }
   public static async getDetalleMovimiento(movimientoId: number): Promise<any> {
     return await this.getRequest<any[]>(
       this.buildRoute(this.movimientoDetalleRoute, {
@@ -26,6 +34,13 @@ export default class MovimientosService extends BaseService {
   public static async createMovimiento(pedido: any) {
     return await this.postJSONRequest<any, any>(
       this.movimientosRoute,
+      pedido
+    );
+  }
+
+  public static async updateMovimiento(id: number, pedido: any) {
+    return await this.putJSONRequest(
+      this.buildRoute(this.movimientoRoute, { movimiento_enc_id: id }),
       pedido
     );
   }

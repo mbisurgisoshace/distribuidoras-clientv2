@@ -22,7 +22,7 @@ import InfoAdicionalPedido from './InfoAdicionalPedido';
 import PedidoSatisfactorio from './PedidoSatisfactorio';
 
 export default function FormPedido(): React.ReactElement {
-  const navigate = useNavigate();
+  const {pedidoId} = useParams();
   const {
     query,
     pedido,
@@ -39,12 +39,13 @@ export default function FormPedido(): React.ReactElement {
     tiposOptions,
     hojasOptions,
     onCrearPedido,
+    onEditarPedido,
     estadosOptions,
     selectedCliente,
     onSelectCliente,
     onConfirmarNuevoPedido,
     condicionesVentaOptions
-  } = usePedidoForm();
+  } = usePedidoForm(pedidoId);
   const [isSearching, setIsSearching] = useState(false);
   const debounceValue = useDebounce<string>(query, 1000);
   const [clientes, setClientes] = useState<IClienteView[]>([]);
@@ -185,10 +186,16 @@ export default function FormPedido(): React.ReactElement {
             <button
               type='button'
               disabled={isLoading}
-              onClick={() => onCrearPedido()}
+              onClick={() => {
+                if (pedidoId && !isNaN(parseInt(pedidoId))) {
+                  onEditarPedido();
+                } else {
+                  onCrearPedido();
+                }
+              }}
               className={`mt-auto inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
             >
-              Crear Pedido
+              {`${pedidoId && !isNaN(parseInt(pedidoId)) ? 'Editar Pedido' : 'Crear Pedido'}`}
             </button>
 
           </div>

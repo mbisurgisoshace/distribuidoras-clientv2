@@ -2,8 +2,10 @@ import moment from 'moment';
 import numeral from 'numeral';
 import React, { useMemo } from 'react';
 import { ColumnDef } from '@tanstack/table-core';
+import { useNavigate } from 'react-router-dom';
 
 export const useMonitorColumns = () => {
+  const navigate = useNavigate();
   const columns: ColumnDef<any>[] = useMemo(
     () => [
       {
@@ -42,7 +44,7 @@ export const useMonitorColumns = () => {
           return (
             <div className="flex items-center">
               <div className={`w-2 h-2 b-ra rounded-lg ${color} mr-2`} />
-              {props.getValue() as string}
+              <span onClick={() => navigate(`/pedidos/${props.getValue()}`)} className='cursor-pointer hover:underline hover:text-indigo-500'>{props.getValue() as string}</span>
             </div>
           );
         },
