@@ -78,7 +78,7 @@ export default function FormPedido(): React.ReactElement {
             </h2>
           </div>
         </div>
-        <div className='grid grid-cols-3 gap-4 mt-6 relative'>
+        <div className='grid grid-cols-3 gap-4 mt-3 xl:mt-6 relative pb-3.5'>
           {isLoading && <LoadingData />}
           <div className='col-span-2 bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6'>
             <div className='flex items-center gap-4'>
