@@ -1,7 +1,8 @@
+import * as _ from 'lodash'
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useCallback } from 'react';
 
-import { ICliente } from '../../../../types/Cliente';
+import { ICliente, IClienteView } from '../../../../types/Cliente';
 import ClientesService from '../../../../services/ClientesService';
 import toaster from '../../../../components/Toast/toaster';
 import { useClienteValidation } from './useClienteValidation';
@@ -114,7 +115,7 @@ export const useClienteForm = (clienteId: any) => {
 
     try {
       if (isCliente()) {
-        await ClientesService.updateCliente(clienteId, cliente);
+        await ClientesService.updateCliente(clienteId, _.omit(cliente, ['canal_nombre', 'sub_zona_nombre']) as ICliente);
         toaster().success({
           title: 'Actualizado correctamente!',
           infoText: 'El cliente fue actualizado correctamente.',
