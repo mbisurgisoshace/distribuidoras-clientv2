@@ -115,7 +115,7 @@ export const useClienteForm = (clienteId: any) => {
 
     try {
       if (isCliente()) {
-        await ClientesService.updateCliente(clienteId, _.omit(cliente, ['canal_nombre', 'sub_zona_nombre']) as ICliente);
+        await ClientesService.updateCliente(clienteId, omit(cliente, ['canal_nombre', 'sub_zona_nombre']) as ICliente);
         toaster().success({
           title: 'Actualizado correctamente!',
           infoText: 'El cliente fue actualizado correctamente.',
