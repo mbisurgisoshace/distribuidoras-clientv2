@@ -1,4 +1,4 @@
-import * as _ from 'lodash'
+import { omit}  from 'lodash'
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useCallback } from 'react';
 
