@@ -229,7 +229,6 @@ export default function InformacionGeneral({
                 label={'Observaciones'}
                 value={cliente.observaciones || ''}
                 onChange={onChangeClienteField}
-                disabled
               />
             </div>
             <div className="col-span-6">
