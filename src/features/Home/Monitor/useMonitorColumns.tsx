@@ -3,6 +3,7 @@ import numeral from 'numeral';
 import React, { useMemo } from 'react';
 import { ColumnDef } from '@tanstack/table-core';
 import { useNavigate } from 'react-router-dom';
+import { CloudIcon } from '@heroicons/react/outline';
 
 export const useMonitorColumns = () => {
   const navigate = useNavigate();
@@ -44,7 +45,12 @@ export const useMonitorColumns = () => {
           return (
             <div className="flex items-center">
               <div className={`w-2 h-2 b-ra rounded-lg ${color} mr-2`} />
-              <span onClick={() => navigate(`/pedidos/${props.getValue()}`)} className='cursor-pointer hover:underline hover:text-indigo-500'>{props.getValue() as string}</span>
+              <span
+                onClick={() => navigate(`/pedidos/${props.getValue()}`)}
+                className="cursor-pointer hover:underline hover:text-indigo-500"
+              >
+                {props.getValue() as string}
+              </span>
             </div>
           );
         },
@@ -123,12 +129,8 @@ export const useMonitorColumns = () => {
         accessorKey: 'Detalle',
         header: 'Detalle',
         cell: (props) => {
-          return (
-            <div className={'w-64'} >
-              {props.renderValue() as string}
-            </div>
-          )
-        }
+          return <div className={'w-64'}>{props.renderValue() as string}</div>;
+        },
       },
       {
         accessorKey: 'Total',
@@ -138,8 +140,8 @@ export const useMonitorColumns = () => {
             <div className={'w-32'}>
               {numeral(props.renderValue()).format('$0,0.00')}
             </div>
-          )
-        }
+          );
+        },
       },
       {
         accessorKey: 'CanalNombre',
@@ -160,6 +162,24 @@ export const useMonitorColumns = () => {
         accessorKey: 'Observaciones',
         header: 'Observaciones',
         cell: (props) => props.renderValue(),
+      },
+      {
+        accessorKey: 'Sincronizado',
+        header: 'Sincronizado',
+        cell: (props) => {
+          const sincronizado = props.getValue() as boolean;
+
+          return (
+            <div>
+              <CloudIcon
+                className={`h-6 w-6 m-auto ${
+                  sincronizado ? 'text-green-400' : 'text-red-400'
+                }`}
+                aria-hidden="true"
+              />
+            </div>
+          );
+        },
       },
     ],
     []
