@@ -1,9 +1,8 @@
 import moment from 'moment';
-import { Fragment, useState } from 'react';
+import { Fragment } from 'react';
 import { XIcon } from '@heroicons/react/outline';
 import { Dialog, Transition } from '@headlessui/react';
 
-import Input from '../../../components/Input';
 import Datepicker from '../../../components/Datepicker';
 import Multiselect from '../../../components/Multiselect';
 
@@ -25,13 +24,16 @@ export default function FilterPanel({
   onApplyFilter,
 }: FilterPanelProps): React.ReactElement {
   const { tablas } = useTablas(
-    'canales,condicionesVenta,tiposMovimiento,estadosMovimiento'
+    'canales,condicionesVenta,tiposMovimiento,estadosMovimiento,choferes'
   );
 
   const onFiltrar = (e: any) => {
     e.preventDefault();
     onApplyFilter(filters);
   };
+  console.log('tablas', tablas);
+
+  console.log('filters', filters);
 
   return (
     <Transition.Root show={isOpen} as={Fragment}>
@@ -160,6 +162,21 @@ export default function FilterPanel({
                           })
                         )}
                         values={filters.condicion}
+                      />
+                      <Multiselect
+                        id="choferes"
+                        label="Choferes"
+                        onOptionsChange={(options) => {
+                          setFilters({
+                            ...filters,
+                            chofer: options,
+                          });
+                        }}
+                        options={tablas.choferes.map((chofer: any) => ({
+                          label: `${chofer.nombre}, ${chofer.apellido}`,
+                          value: chofer.chofer_id,
+                        }))}
+                        values={filters.chofer}
                       />
                       <button
                         type="submit"

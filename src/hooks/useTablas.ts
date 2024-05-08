@@ -13,6 +13,7 @@ export const useTablas = (tablasQuery: string) => {
     tiposMovimiento: [],
     estadosMovimiento: [],
     motivos: [],
+    choferes: [],
   });
   const [isLoading, setIsLoading] = useState(false);
 

@@ -44,6 +44,7 @@ export default function MonitorPedidos({
     tipos: [],
     canal: [],
     estado: [],
+    chofer: [],
     condicion: [],
     desde: new Date(),
     hasta: new Date(),
