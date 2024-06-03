@@ -207,7 +207,6 @@ export default function InformacionGeneral({
                 label={'Latitud'}
                 value={cliente.latitud || ''}
                 onChange={onChangeClienteField}
-                disabled
               />
             </div>
             <div className="col-span-6 sm:col-span-3">
@@ -218,7 +217,6 @@ export default function InformacionGeneral({
                 label={'Longitud'}
                 value={cliente.longitud || ''}
                 onChange={onChangeClienteField}
-                disabled
               />
             </div>
             <div className="col-span-6">
