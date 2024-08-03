@@ -64,9 +64,10 @@ export default abstract class BaseService {
     const parsedResponse = await response.json();
 
     if (this.ERROR_RESPONSE_CODES.indexOf(response.status) > -1) {
-      if (parsedResponse.redirect && parsedResponse.redirect == 'login') {
+      if (parsedResponse.redirect && parsedResponse.redirect === 'login') {
         localStorage.removeItem(this.JWT_SECRET);
-        //window.history.pushState(null, null, '/login');
+        window.history.replaceState(null, '', '/login');
+        window.location.reload();
       }
       throw parsedResponse;
     }
@@ -89,6 +90,11 @@ export default abstract class BaseService {
     const parsedResponse = await response.json();
 
     if (this.ERROR_RESPONSE_CODES.indexOf(response.status) > -1) {
+      if (parsedResponse.redirect && parsedResponse.redirect === 'login') {
+        localStorage.removeItem(this.JWT_SECRET);
+        window.history.replaceState(null, '', '/login');
+        window.location.reload();
+      }
       throw parsedResponse;
     }
 
@@ -151,6 +157,11 @@ export default abstract class BaseService {
     const parsedResponse = await response.json();
 
     if (this.ERROR_RESPONSE_CODES.indexOf(response.status) > -1) {
+      if (parsedResponse.redirect && parsedResponse.redirect === 'login') {
+        localStorage.removeItem(this.JWT_SECRET);
+        window.history.replaceState(null, '', '/login');
+        window.location.reload();
+      }
       throw parsedResponse;
     }
 
