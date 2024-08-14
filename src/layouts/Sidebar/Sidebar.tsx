@@ -48,7 +48,7 @@ export default function Sidebar({
       icon: ShoppingCartIcon,
       current: false,
       children: [
-        { name: 'Hojas de Ruta', href: '#' },
+        { name: 'Hojas de Ruta', href: '/hojas' },
         { name: 'Nuevo Pedido', href: '/pedidos/new' },
       ],
     },

@@ -1,12 +1,8 @@
-import moment from 'moment';
 import { Fragment } from 'react';
 import { XIcon } from '@heroicons/react/outline';
 import { Dialog, Transition } from '@headlessui/react';
 
 import Datepicker from '../../../components/Datepicker';
-import Multiselect from '../../../components/Multiselect';
-
-import { useTablas } from '../../../hooks/useTablas';
 
 interface FilterPanelProps {
   filters: any;
@@ -23,10 +19,6 @@ export default function FilterPanel({
   setFilters,
   onApplyFilter,
 }: FilterPanelProps): React.ReactElement {
-  const { tablas } = useTablas(
-    'canales,condicionesVenta,tiposMovimiento,estadosMovimiento,choferes'
-  );
-
   const onFiltrar = (e: any) => {
     e.preventDefault();
     onApplyFilter(filters);
@@ -95,85 +87,6 @@ export default function FilterPanel({
                             hasta: date,
                           });
                         }}
-                      />
-                      <Multiselect
-                        id="estados"
-                        label="Estados"
-                        onOptionsChange={(options) => {
-                          setFilters({
-                            ...filters,
-                            estado: options,
-                          });
-                        }}
-                        options={tablas.estadosMovimiento.map(
-                          (estado: any) => ({
-                            label: estado.estado_movimiento_nombre,
-                            value: estado.estado_movimiento_id,
-                          })
-                        )}
-                        values={filters.estado}
-                      />
-                      <Multiselect
-                        id="canales"
-                        label="Canales"
-                        onOptionsChange={(options) => {
-                          setFilters({
-                            ...filters,
-                            canal: options,
-                          });
-                        }}
-                        options={tablas.canales.map((canal: any) => ({
-                          label: canal.canal_nombre,
-                          value: canal.canal_id,
-                        }))}
-                        values={filters.canal}
-                      />
-                      <Multiselect
-                        id="tipos"
-                        label="Tipos Movimiento"
-                        onOptionsChange={(options) => {
-                          setFilters({
-                            ...filters,
-                            tipos: options,
-                          });
-                        }}
-                        options={tablas.tiposMovimiento.map((tipo: any) => ({
-                          label: tipo.tipo_movimiento_nombre,
-                          value: tipo.tipo_movimiento_id,
-                        }))}
-                        values={filters.tipos}
-                      />
-                      <Multiselect
-                        id="condiciones"
-                        label="Condiciones de Venta"
-                        onOptionsChange={(options) => {
-                          setFilters({
-                            ...filters,
-                            condicion: options,
-                          });
-                        }}
-                        options={tablas.condicionesVenta.map(
-                          (condicion: any) => ({
-                            label: condicion.condicion_venta_nombre,
-                            value: condicion.condicion_venta_id,
-                          })
-                        )}
-                        values={filters.condicion}
-                      />
-                      <Multiselect
-                        id="choferes"
-                        label="Choferes"
-                        onOptionsChange={(options) => {
-                          setFilters({
-                            ...filters,
-                            chofer: options,
-                          });
-                        }}
-                        options={tablas.choferes.map((chofer: any) => ({
-                          label: `${chofer.nombre}, ${chofer.apellido}`,
-                          value: chofer.chofer_id,
-                        }))}
-                        values={filters.chofer}
                       />
                       <button
                         type="submit"

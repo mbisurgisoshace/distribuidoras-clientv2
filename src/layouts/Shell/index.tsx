@@ -8,6 +8,7 @@ import Clientes from '../../features/Clientes';
 import { RequireAuth } from '../../features/Auth/ProtectedRoute';
 import FormCliente from '../../features/Clientes/FormCliente';
 import FormPedido from '../../features/Pedidos/FormPedido';
+import Ruteos from '../../features/Ruteos';
 
 export default function Shell() {
   return (
@@ -18,6 +19,14 @@ export default function Shell() {
           element={
             <RequireAuth>
               <Home />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/hojas"
+          element={
+            <RequireAuth>
+              <Ruteos />
             </RequireAuth>
           }
         />
