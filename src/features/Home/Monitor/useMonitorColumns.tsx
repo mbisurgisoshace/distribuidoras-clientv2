@@ -46,7 +46,9 @@ export const useMonitorColumns = () => {
             <div className="flex items-center">
               <div className={`w-2 h-2 b-ra rounded-lg ${color} mr-2`} />
               <span
-                onClick={() => navigate(`/pedidos/${props.getValue()}`)}
+                onClick={() =>
+                  window.open(`/pedidos/${props.getValue()}`, '_blank')
+                }
                 className="cursor-pointer hover:underline hover:text-indigo-500"
               >
                 {props.getValue() as string}
