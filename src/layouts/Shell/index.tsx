@@ -2,13 +2,14 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import Home from '../../features/Home';
+import Ruteos from '../../features/Ruteos';
 import Login from '../../features/Auth/Login';
 import Clientes from '../../features/Clientes';
+import NewHoja from '../../features/Ruteos/Hoja/NewHoja';
+import FormPedido from '../../features/Pedidos/FormPedido';
+import FormCliente from '../../features/Clientes/FormCliente';
 
 import { RequireAuth } from '../../features/Auth/ProtectedRoute';
-import FormCliente from '../../features/Clientes/FormCliente';
-import FormPedido from '../../features/Pedidos/FormPedido';
-import Ruteos from '../../features/Ruteos';
 
 export default function Shell() {
   return (
@@ -27,6 +28,14 @@ export default function Shell() {
           element={
             <RequireAuth>
               <Ruteos />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/hojas/new"
+          element={
+            <RequireAuth>
+              <NewHoja />
             </RequireAuth>
           }
         />

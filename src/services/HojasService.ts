@@ -1,8 +1,9 @@
 import BaseService from './baseService';
 
-import { Hoja } from '../types/Hoja';
+import { Hoja, NewHoja } from '../types/Hoja';
 
 export default class HojasService extends BaseService {
+  static hojasAbrirRoute = '/hojas/abrir';
   static hojasSearchRoute = '/hojas/search';
   static hojasByEstadoRoute = '/hojas/estado/{estado}';
 
@@ -14,5 +15,15 @@ export default class HojasService extends BaseService {
 
   public static async searchHojas(filters: any): Promise<Array<any>> {
     return await this.postJSONRequest<any, any>(this.hojasSearchRoute, filters);
+  }
+
+  public static async abrirHojaRuta(
+    hojaRuta: NewHoja,
+    clientes: any[]
+  ): Promise<Array<any>> {
+    return await this.postJSONRequest<any, any>(this.hojasAbrirRoute, {
+      hojaRuta,
+      clientes,
+    });
   }
 }

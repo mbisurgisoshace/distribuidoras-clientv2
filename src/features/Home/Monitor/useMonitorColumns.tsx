@@ -2,11 +2,9 @@ import moment from 'moment';
 import numeral from 'numeral';
 import React, { useMemo } from 'react';
 import { ColumnDef } from '@tanstack/table-core';
-import { useNavigate } from 'react-router-dom';
 import { CloudIcon } from '@heroicons/react/outline';
 
 export const useMonitorColumns = () => {
-  const navigate = useNavigate();
   const columns: ColumnDef<any>[] = useMemo(
     () => [
       {

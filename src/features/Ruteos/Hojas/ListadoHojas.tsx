@@ -12,9 +12,10 @@ import { useNavigate } from 'react-router-dom';
 import { FilterIcon, PlusIcon } from '@heroicons/react/outline';
 
 import FilterPanel from './FilterPanel';
-import { useHojasColumns } from './useHojasColumns';
 import DataCell from './Cells/DataCell';
 import HeaderCell from './Cells/HeaderCell';
+import { NuevaHojaModal } from './NuevaHojaModal';
+import { useHojasColumns } from './useHojasColumns';
 import Pagination from '../../../components/Table/Pagination';
 import LoadingData from '../../../components/Table/LoadingData';
 import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/solid';
@@ -37,6 +38,7 @@ export default function ListadoHojas({
     desde: new Date(),
     hasta: new Date(),
   });
+  let [isOpen, setIsOpen] = useState(false);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
 
@@ -59,6 +61,7 @@ export default function ListadoHojas({
 
   return (
     <div className="flex flex-col h-full relative z-0 overflow-auto focus:outline-none xl:order-last md:rounded-lg">
+      {isOpen && <NuevaHojaModal isOpen={isOpen} setIsOpen={setIsOpen} />}
       <div className="flex items-center justify-between">
         <div className="flex-1 min-w-0">
           <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
@@ -69,7 +72,7 @@ export default function ListadoHojas({
           <OptionsButton
             mainOption={{
               name: 'Nueva Hoja',
-              onClick: () => navigate('/hojas/new'),
+              onClick: () => setIsOpen(true),
               icon: (
                 <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
               ),
