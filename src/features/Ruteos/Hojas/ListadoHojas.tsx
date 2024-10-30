@@ -10,16 +10,17 @@ import {
 } from '@tanstack/react-table';
 import { useNavigate } from 'react-router-dom';
 import { FilterIcon, PlusIcon } from '@heroicons/react/outline';
+import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/solid';
 
 import FilterPanel from './FilterPanel';
 import DataCell from './Cells/DataCell';
 import HeaderCell from './Cells/HeaderCell';
 import { NuevaHojaModal } from './NuevaHojaModal';
 import { useHojasColumns } from './useHojasColumns';
+import toaster from '../../../components/Toast/toaster';
+import OptionsButton from '../../../components/OptionsButton';
 import Pagination from '../../../components/Table/Pagination';
 import LoadingData from '../../../components/Table/LoadingData';
-import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/solid';
-import OptionsButton from '../../../components/OptionsButton';
 
 interface ListadoHojasProps {
   data: any[];
@@ -59,9 +60,28 @@ export default function ListadoHojas({
     getPaginationRowModel: getPaginationRowModel(),
   });
 
+  const onHojaAbierta = () => {
+    setIsOpen(false);
+    onSearch({
+      ...filters,
+      desde: moment(filters.desde).format('DD-MM-YYYY'),
+      hasta: moment(filters.hasta).format('DD-MM-YYYY'),
+    });
+    toaster().success({
+      title: 'Hoja de Ruta abierta',
+      infoText: 'La hoja de ruta se abrio correctamente',
+    });
+  };
+
   return (
     <div className="flex flex-col h-full relative z-0 overflow-auto focus:outline-none xl:order-last md:rounded-lg">
-      {isOpen && <NuevaHojaModal isOpen={isOpen} setIsOpen={setIsOpen} />}
+      {isOpen && (
+        <NuevaHojaModal
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          onHojaAbierta={onHojaAbierta}
+        />
+      )}
       <div className="flex items-center justify-between">
         <div className="flex-1 min-w-0">
           <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">

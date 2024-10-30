@@ -12,6 +12,7 @@ import { Step, Stepper } from '../../../../components/Stepper';
 
 interface NuevaHojaModalProps {
   isOpen: boolean;
+  onHojaAbierta: () => void;
   setIsOpen: (isOpen: boolean) => void;
 }
 
@@ -38,7 +39,11 @@ const PASOS_APERTURA: Step[] = [
   },
 ];
 
-export function NuevaHojaModal({ isOpen, setIsOpen }: NuevaHojaModalProps) {
+export function NuevaHojaModal({
+  isOpen,
+  setIsOpen,
+  onHojaAbierta,
+}: NuevaHojaModalProps) {
   const { hoja, setHoja, zonas, choferes, camiones, isLoading, abrirHojaRuta } =
     useNewHojaForm();
 
@@ -125,6 +130,8 @@ export function NuevaHojaModal({ isOpen, setIsOpen }: NuevaHojaModalProps) {
       },
       clientes
     );
+
+    onHojaAbierta();
   };
 
   return (
