@@ -1,32 +1,15 @@
 import numeral from 'numeral';
 import { Row } from '@tanstack/react-table';
-import React, { useEffect, useState } from 'react';
-
-import MovimientosService from '../../services/MovimientosService';
 
 interface ExpandablePedidoRowProps {
   row: Row<any>;
   colSpan: number;
 }
 
-export default function ExpandablePedidoRow({
+export default function ExpandableComodatoRow({
   row,
   colSpan,
 }: ExpandablePedidoRowProps) {
-  const [items, setItems] = useState([]);
-
-  useEffect(() => {
-    const movimientoId = row.original.movimiento_enc_id;
-    getItems(movimientoId);
-  }, [row]);
-
-  const getItems = async (movimientoId: number) => {
-    const items = await MovimientosService.getDetalleMovimiento(movimientoId);
-    setItems(items);
-  };
-
-  if (items.length === 0) return null;
-
   return (
     <>
       <tr>
@@ -47,9 +30,9 @@ export default function ExpandablePedidoRow({
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {items.map((item: any) => {
+                {row.original.items.map((item: any) => {
                   return (
-                    <tr key={item.movimiento_det_id}>
+                    <tr key={item.comodato_det_id}>
                       <td className="text-xs whitespace-nowrap px-2 py-2 sm:text-sm text-gray-900">
                         {item.envase_nombre}
                       </td>

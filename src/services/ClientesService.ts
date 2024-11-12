@@ -7,6 +7,7 @@ export default class ClientesService extends BaseService {
   static queryClientesRoute = '/clientes/search';
   static searchClientesRoute = '/clientes/filter';
   static plantillasClientesRoute = '/clientes/plantilla';
+  static clienteComodatosRoute = '/comodatos/cliente/{cliente_id}';
   static clientePedidosRoute = '/clientes/{cliente_id}/lastPedidos';
 
   public static async getClientes(): Promise<Array<ICliente>> {
@@ -62,6 +63,12 @@ export default class ClientesService extends BaseService {
   public static async getLastPedidos(clienteId: number): Promise<any[]> {
     return await this.getRequest(
       this.buildRoute(this.clientePedidosRoute, { cliente_id: clienteId })
+    );
+  }
+
+  public static async getComodatosCliente(clienteId: number): Promise<any[]> {
+    return await this.getRequest(
+      this.buildRoute(this.clienteComodatosRoute, { cliente_id: clienteId })
     );
   }
 
