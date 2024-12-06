@@ -21,8 +21,10 @@ export default function Form({ clienteId }: FormProps): React.ReactElement {
   } = useClienteForm(clienteId);
 
   const { tablas } = useTablas(
-    'zonas,subzonas,canales,subcanales,condicionesIva,condicionesVenta,listasPrecio'
+    'zonas,subzonas,canales,subcanales,condicionesIva,condicionesVenta,listasPrecio,localidades'
   );
+
+  console.log('tablas', tablas);
 
   return (
     <form className="mt-0 sm:mt-3.5 pb-3.5 space-y-6" onSubmit={onSubmit}>
@@ -31,6 +33,7 @@ export default function Form({ clienteId }: FormProps): React.ReactElement {
         cliente={cliente}
         zonas={tablas.zonas}
         subzonas={tablas.subzonas}
+        localidades={tablas.localidades}
         onLocationChanged={onLocationChanged}
         onChangeClienteField={onClienteFieldChanged}
       />

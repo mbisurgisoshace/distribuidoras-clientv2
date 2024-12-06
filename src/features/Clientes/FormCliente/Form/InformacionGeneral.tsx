@@ -10,6 +10,7 @@ interface InformacionGeneralProps {
   errors: any;
   zonas: any[];
   subzonas: any[];
+  localidades: any[];
   cliente: ICliente;
   onLocationChanged: (
     lat: number,
@@ -28,6 +29,7 @@ export default function InformacionGeneral({
   errors,
   cliente,
   subzonas,
+  localidades,
   onLocationChanged,
   onChangeClienteField,
 }: InformacionGeneralProps): React.ReactElement {
@@ -133,13 +135,26 @@ export default function InformacionGeneral({
               />
             </div>
             <div className="col-span-6 sm:col-span-4">
-              <Input
+              {/* <Input
                 id={'localidad'}
                 name={'localidad'}
                 type="text"
                 label={'Localidad'}
                 value={cliente.localidad || ''}
                 onChange={onChangeClienteField}
+              /> */}
+              <Select
+                id="localidad"
+                label="Localidad"
+                options={localidades.map((localidadOption) => ({
+                  label: localidadOption.localidad,
+                  value: localidadOption.localidad,
+                }))}
+                value={cliente.localidad || -1}
+                onOptionChange={(value) =>
+                  onChangeClienteField('localidad', value)
+                }
+                error={errors.localidad}
               />
             </div>
             <div className="col-span-6 sm:col-span-2">

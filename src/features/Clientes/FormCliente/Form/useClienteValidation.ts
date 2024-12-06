@@ -8,6 +8,9 @@ export const useClienteValidation = () => {
 
     if (!cliente.calle) validationErrors.calle = 'Calle es requerido.';
 
+    if (!cliente.localidad)
+      validationErrors.localidad = 'Localidad es requerido.';
+
     if (!cliente.zona_sub_id)
       validationErrors.zona_sub_id = 'Subzona es requerido.';
 
