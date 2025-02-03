@@ -114,11 +114,15 @@ export const usePedidoForm = (pedidoId: any) => {
   };
 
   const onSelectCliente = async (cliente: IClienteView) => {
+    const hojaAsignada = hojas.find((hoja) => hoja.zona_id === cliente.zona_id);
+
     const precios = await PrecioService.getPrecios(cliente.lista_precio_id!);
     setPedido({
       ...pedido,
       cliente_id: cliente.cliente_id!,
       condicion_venta_id: cliente.condicion_venta_id,
+      hoja_ruta_id: hojaAsignada?.hoja_ruta_id || null,
+      estado_movimiento_id: hojaAsignada ? 1 : 2,
     });
     setPrecios(precios);
     setSelectedCliente(cliente);

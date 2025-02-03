@@ -4,6 +4,7 @@ export interface Hoja {
   apellido: string;
   nombre: string;
   fecha: string;
+  zona_id: number;
 }
 
 export interface NewHoja {
