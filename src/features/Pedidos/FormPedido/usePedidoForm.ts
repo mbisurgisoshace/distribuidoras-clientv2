@@ -2,7 +2,12 @@ import { useEffect, useState } from 'react';
 import moment from 'moment/moment';
 
 import { Hoja } from '../../../types/Hoja';
-import { EstadoMovimiento, ItemPedido, Pedido, TipoMovimiento } from '../../../types/Pedidos';
+import {
+  EstadoMovimiento,
+  ItemPedido,
+  Pedido,
+  TipoMovimiento,
+} from '../../../types/Pedidos';
 import HojasService from '../../../services/HojasService';
 import TipoPedidosService from '../../../services/TipoPedidosService';
 import EstadoMovimientosService from '../../../services/EstadoMovimientosService';
@@ -25,13 +30,13 @@ const initData: Pedido = {
   visito: false,
   vendio: false,
   observaciones: '',
-  items: []
-}
+  items: [],
+};
 
 type Coords = {
-  lat: number | undefined,
-  lng: number | undefined
-}
+  lat: number | undefined;
+  lng: number | undefined;
+};
 export const usePedidoForm = (pedidoId: any) => {
   const [query, setQuery] = useState('');
   const [pedido, setPedido] = useState<Pedido>(initData);
@@ -43,30 +48,39 @@ export const usePedidoForm = (pedidoId: any) => {
   const [tiposPedido, setTiposPedido] = useState<TipoMovimiento[]>([]);
   const [estadosPedido, setEstadosPedido] = useState<EstadoMovimiento[]>([]);
   const [newPedidoId, setNewPedidoId] = useState<number | undefined>(undefined);
-  const [condicionesVenta, setCondicionesVenta] = useState<CondicionVenta[]>([]);
+  const [condicionesVenta, setCondicionesVenta] = useState<CondicionVenta[]>(
+    []
+  );
   const [coords, setCoords] = useState<Coords>({
     lat: undefined,
-    lng: undefined
+    lng: undefined,
   });
 
   useEffect(() => {
-    init()
-  }, [])
+    init();
+  }, []);
+
   const init = async () => {
     if (pedidoId && !isNaN(parseInt(pedidoId))) {
       const pedido = await getPedido(pedidoId);
       await getCliente(pedido.cliente_id);
       setPedido(pedido);
     } else {
-      setPedido(initData)
+      setPedido(initData);
     }
-    await Promise.all([getHojas(), getProductos(), getTiposPedido(), getEstadosPedido(), getCondicionesVenta()])
+    await Promise.all([
+      getHojas(),
+      getProductos(),
+      getTiposPedido(),
+      getEstadosPedido(),
+      getCondicionesVenta(),
+    ]);
     setIsLoading(false);
-  }
+  };
   const getHojas = async () => {
     const hojas = await HojasService.getHojasByEstado(1);
     setHojas(hojas);
-  }
+  };
 
   const getCliente = async (clienteId: number) => {
     const cliente = await ClientesService.getCliente(clienteId);
@@ -74,37 +88,37 @@ export const usePedidoForm = (pedidoId: any) => {
     setPrecios(precios);
     setSelectedCliente(cliente as IClienteView);
     setCoords({ lat: cliente.latitud, lng: cliente.longitud });
-  }
+  };
   const getPedido = async (pedidoId: number) => {
     return await MovimientosService.getMovimiento(pedidoId);
-  }
+  };
 
   const getProductos = async () => {
     const productos = await ProductosService.getProductos();
     setProductos(productos);
-  }
+  };
 
   const getTiposPedido = async () => {
     const tipos = await TipoPedidosService.getTipoPedidos();
     setTiposPedido(tipos);
-  }
+  };
 
   const getEstadosPedido = async () => {
     const estados = await EstadoMovimientosService.getEstadoMovimientos();
     setEstadosPedido(estados);
-  }
+  };
 
   const getCondicionesVenta = async () => {
     const condiciones = await CondicionesVentaService.getCondicionesVenta();
     setCondicionesVenta(condiciones);
-  }
+  };
 
   const onSelectCliente = async (cliente: IClienteView) => {
     const precios = await PrecioService.getPrecios(cliente.lista_precio_id!);
     setPedido({
       ...pedido,
       cliente_id: cliente.cliente_id!,
-      condicion_venta_id: cliente.condicion_venta_id
+      condicion_venta_id: cliente.condicion_venta_id,
     });
     setPrecios(precios);
     setSelectedCliente(cliente);
@@ -116,13 +130,13 @@ export const usePedidoForm = (pedidoId: any) => {
       envase_id: '',
       cantidad: '',
       precio: '',
-      monto: ''
+      monto: '',
     });
 
     setPedido({
-      ...pedido
+      ...pedido,
     });
-  }
+  };
 
   const onEditItem = (key: keyof ItemPedido, index: number, value: string) => {
     const row = pedido.items[index];
@@ -130,27 +144,29 @@ export const usePedidoForm = (pedidoId: any) => {
     row[key] = value;
 
     if (key === 'envase_id') {
-      const precioProducto = precios.find(precio => precio.envase_id === value);
+      const precioProducto = precios.find(
+        (precio) => precio.envase_id === value
+      );
       if (precioProducto) {
         row.precio = precioProducto.precio;
       }
     }
 
-    const precio = parseFloat(row.precio as string || '0');
-    const cantidad = parseFloat(row.cantidad as string || '0');
+    const precio = parseFloat((row.precio as string) || '0');
+    const cantidad = parseFloat((row.cantidad as string) || '0');
 
     if (key === 'cantidad' || key === 'precio') {
       row.monto = precio * cantidad;
     }
     setPedido({
-      ...pedido
+      ...pedido,
     });
   };
 
   const onRemoveItem = (idx: number) => {
     pedido.items.splice(idx, 1);
     setPedido({
-      ...pedido
+      ...pedido,
     });
   };
 
@@ -159,11 +175,11 @@ export const usePedidoForm = (pedidoId: any) => {
     setPedido({
       ...pedido,
       cliente_id: null,
-      condicion_venta_id: null
+      condicion_venta_id: null,
     });
     setSelectedCliente(undefined);
     setCoords({ lat: undefined, lng: undefined });
-  }
+  };
 
   const onCrearPedido = async () => {
     setIsLoading(true);
@@ -174,7 +190,7 @@ export const usePedidoForm = (pedidoId: any) => {
     } catch (err) {
       toaster().error({
         title: 'Ha ocurrido un error!',
-        infoText: 'El pedido no se ha podido guardar.'
+        infoText: 'El pedido no se ha podido guardar.',
       });
     }
 
@@ -185,20 +201,23 @@ export const usePedidoForm = (pedidoId: any) => {
     setIsLoading(true);
 
     try {
-      await MovimientosService.updateMovimiento(pedido.movimiento_enc_id!, pedido);
+      await MovimientosService.updateMovimiento(
+        pedido.movimiento_enc_id!,
+        pedido
+      );
       toaster().success({
         title: 'Actualizado correctamente!',
-        infoText: 'El pedido fue actualizado correctamente.'
+        infoText: 'El pedido fue actualizado correctamente.',
       });
     } catch (err) {
       toaster().error({
         title: 'Ha ocurrido un error!',
-        infoText: 'El pedido no se ha podido guardar.'
+        infoText: 'El pedido no se ha podido guardar.',
       });
     }
 
     setIsLoading(false);
-  }
+  };
 
   const onConfirmarNuevoPedido = () => {
     setQuery('');
@@ -212,23 +231,29 @@ export const usePedidoForm = (pedidoId: any) => {
       visito: false,
       vendio: false,
       observaciones: '',
-      items: []
+      items: [],
     });
     setNewPedidoId(undefined);
     setSelectedCliente(undefined);
     setCoords({ lat: undefined, lng: undefined });
-  }
+  };
 
-  const hojasOptions = hojas.map((hoja) => ({
-    value: hoja.hoja_ruta_id!,
-    label: `${hoja.apellido}, ${hoja.nombre} - ${hoja.hoja_ruta_numero}`
-  }));
+  const hojasOptions = hojas
+    .filter((hoja) => {
+      const fechaHoy = pedido.fecha;
+      const fechaHoja = moment(hoja.fecha, 'YYYY-MM-DD').format('DD-MM-YYYY');
+      return fechaHoy === fechaHoja;
+    })
+    .map((hoja) => ({
+      value: hoja.hoja_ruta_id!,
+      label: `${hoja.apellido}, ${hoja.nombre} - ${hoja.hoja_ruta_numero}`,
+    }));
 
   hojasOptions.unshift({
     value: -1,
-    label: 'Sin Chofer'
-  })
-  console.log(pedido);
+    label: 'Sin Chofer',
+  });
+
   return {
     query,
     coords,
@@ -249,17 +274,17 @@ export const usePedidoForm = (pedidoId: any) => {
     onSelectCliente,
     selectedCliente,
     onConfirmarNuevoPedido,
-    tiposOptions: tiposPedido.map(tipo => ({
+    tiposOptions: tiposPedido.map((tipo) => ({
       value: tipo.tipo_movimiento_id,
-      label: tipo.tipo_movimiento_nombre
+      label: tipo.tipo_movimiento_nombre,
     })),
-    estadosOptions: estadosPedido.map(estado => ({
+    estadosOptions: estadosPedido.map((estado) => ({
       value: estado.estado_movimiento_id,
-      label: estado.estado_movimiento_nombre
+      label: estado.estado_movimiento_nombre,
     })),
-    condicionesVentaOptions: condicionesVenta.map(condicion => ({
+    condicionesVentaOptions: condicionesVenta.map((condicion) => ({
       value: condicion.condicion_venta_id,
-      label: condicion.condicion_venta_nombre
-    }))
-  }
-}
+      label: condicion.condicion_venta_nombre,
+    })),
+  };
+};

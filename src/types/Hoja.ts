@@ -3,6 +3,7 @@ export interface Hoja {
   hoja_ruta_numero: string;
   apellido: string;
   nombre: string;
+  fecha: string;
 }
 
 export interface NewHoja {
