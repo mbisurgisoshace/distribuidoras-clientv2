@@ -2,10 +2,23 @@ import moment from 'moment';
 import { useMemo } from 'react';
 import { ColumnDef } from '@tanstack/table-core';
 import { useNavigate } from 'react-router-dom';
-import { LockOpenIcon } from '@heroicons/react/outline';
+import { LockOpenIcon, DocumentRemoveIcon } from '@heroicons/react/outline';
+import { useAuth } from '../../Auth/AuthProvider';
+import HojasService from '../../../services/HojasService';
+import toaster from '../../../components/Toast/toaster';
 
 export const useHojasColumns = () => {
+  const auth = useAuth();
   const navigate = useNavigate();
+
+  const onDeleteHoja = async (hojaId: number) => {
+    await HojasService.borrarHoja(hojaId);
+    toaster().success({
+      title: 'Hoja de Ruta eliminada!',
+      infoText: 'La hoja de ruta ha sido eliminada correctamente.',
+    });
+    window.location.reload();
+  };
 
   const columns: ColumnDef<any>[] = useMemo(
     () => [
@@ -92,7 +105,7 @@ export const useHojasColumns = () => {
         id: 'actions',
         header: '',
         cell: (props) => (
-          <div className="flex justify-center items-center">
+          <div className="flex justify-center items-center gap-2">
             <button
               type="button"
               disabled={props.row.original.Estado}
@@ -104,11 +117,20 @@ export const useHojasColumns = () => {
             >
               <LockOpenIcon aria-hidden="true" className="h-5 w-5" />
             </button>
+            {auth.user && auth.user.rol === 'admin' && (
+              <button
+                type="button"
+                onClick={() => onDeleteHoja(props.row.original.HojaRutaID)}
+                className={`rounded-full bg-white p-1 text-red-500 hover:text-red-700 cursor-pointer`}
+              >
+                <DocumentRemoveIcon aria-hidden="true" className="h-5 w-5" />
+              </button>
+            )}
           </div>
         ),
       },
     ],
-    []
+    [auth.user]
   );
 
   return { columns };

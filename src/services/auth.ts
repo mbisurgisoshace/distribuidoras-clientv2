@@ -1,51 +1,54 @@
-import BaseService from "./baseService";
+import BaseService from './baseService';
 
 interface AuthParams {
-	username: string;
-	password: string;
+  username: string;
+  password: string;
 }
 
 export default class AuthService extends BaseService {
-    static loginRoute = '/auth/login';
+  static loginRoute = '/auth/login';
 
-    private static createAuthParams(username: string, password: string): AuthParams {
-		return {
-			username: username.trim(),
-			password: password.trim()
-		};
-	}
+  private static createAuthParams(
+    username: string,
+    password: string
+  ): AuthParams {
+    return {
+      username: username.trim(),
+      password: password.trim(),
+    };
+  }
 
-    private static storeAuthToken(token: string): void {
-		localStorage.setItem('__JWT_SECRET__', token);
-	}
+  private static storeAuthToken(token: string): void {
+    localStorage.setItem('__JWT_SECRET__', token);
+  }
 
-	private static storeUsername(username: string): void {
-		localStorage.setItem('__USERNAME__', username);
-	}
+  private static storeUser(user: string): void {
+    localStorage.setItem('__USER__', user);
+  }
 
-    public static async login(username: string, password: string): Promise<any> {
-		try {
-			const loginResponse = await this.postFormRequest<any>(
-				this.loginRoute,
-				this.createAuthParams(username, password)
-			);
+  public static async login(username: string, password: string): Promise<any> {
+    try {
+      const loginResponse = await this.postFormRequest<any>(
+        this.loginRoute,
+        this.createAuthParams(username, password)
+      );
 
-			if (loginResponse.status === 'success') {
-				this.storeUsername(username);
-				this.storeAuthToken(loginResponse.token);
-			}
+      if (loginResponse.status === 'success') {
+        this.storeUser(JSON.stringify(loginResponse.user));
+        this.storeAuthToken(loginResponse.token);
+      }
 
-            return loginResponse;
-		} catch (e) {
-			return {
-				status: 'error',
-				error: 'Ha ocurrido un error al intentar loguearse.'
-			};
-		}
-	}
+      return loginResponse;
+    } catch (e) {
+      return {
+        status: 'error',
+        error: 'Ha ocurrido un error al intentar loguearse.',
+      };
+    }
+  }
 
-	public static logout(): boolean {
-		localStorage.clear();
-		return true;
-	}
+  public static logout(): boolean {
+    localStorage.clear();
+    return true;
+  }
 }

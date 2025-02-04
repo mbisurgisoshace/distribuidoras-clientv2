@@ -30,10 +30,9 @@ interface ListadoHojasProps {
 
 export default function ListadoHojas({
   data,
-  isLoading,
   onSearch,
+  isLoading,
 }: ListadoHojasProps) {
-  const navigate = useNavigate();
   const { columns } = useHojasColumns();
   const [filters, setFilters] = useState<any>({
     desde: new Date(),

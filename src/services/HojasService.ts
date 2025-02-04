@@ -3,6 +3,7 @@ import BaseService from './baseService';
 import { Hoja, NewHoja } from '../types/Hoja';
 
 export default class HojasService extends BaseService {
+  static hojaRoute = '/hojas/{hojaRutaId}';
   static hojasAbrirRoute = '/hojas/abrir';
   static hojasSearchRoute = '/hojas/search';
   static hojasByEstadoRoute = '/hojas/estado/{estado}';
@@ -25,5 +26,11 @@ export default class HojasService extends BaseService {
       hojaRuta,
       clientes,
     });
+  }
+
+  public static async borrarHoja(hojaRutaId: number): Promise<any> {
+    return await this.deleteRequest<any>(
+      this.buildRoute(this.hojaRoute, { hojaRutaId })
+    );
   }
 }

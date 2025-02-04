@@ -19,7 +19,7 @@ export function useAuth() {
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   let [user, setUser] = React.useState<any>(
-    localStorage.getItem('__USERNAME__')
+    JSON.parse(localStorage.getItem('__USER__') || '{}')
   );
 
   let signin = (
