@@ -146,10 +146,20 @@ export default function InformacionGeneral({
               <Select
                 id="localidad"
                 label="Localidad"
-                options={localidades.map((localidadOption) => ({
-                  label: localidadOption.localidad,
-                  value: localidadOption.localidad,
-                }))}
+                options={localidades
+                  .sort((a, b) => {
+                    if (a.localidad < b.localidad) {
+                      return -1;
+                    }
+                    if (a.localidad > b.localidad) {
+                      return 1;
+                    }
+                    return 0;
+                  })
+                  .map((localidadOption) => ({
+                    label: localidadOption.localidad,
+                    value: localidadOption.localidad,
+                  }))}
                 value={cliente.localidad || -1}
                 onOptionChange={(value) =>
                   onChangeClienteField('localidad', value)
