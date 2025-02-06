@@ -242,6 +242,30 @@ export const usePedidoForm = (pedidoId: any) => {
     setCoords({ lat: undefined, lng: undefined });
   };
 
+  const onActualizarCliente = async (actualizarCliente: any) => {
+    try {
+      if (selectedCliente) {
+        await ClientesService.updateCliente(
+          selectedCliente?.cliente_id,
+          actualizarCliente
+        );
+        setSelectedCliente({
+          ...selectedCliente,
+          ...actualizarCliente,
+        });
+        toaster().success({
+          title: 'Actualizado correctamente!',
+          infoText: 'El cliente fue actualizado correctamente.',
+        });
+      }
+    } catch (err) {
+      toaster().error({
+        title: 'Ha ocurrido un error!',
+        infoText: 'El cliente no se ha podido guardar.',
+      });
+    }
+  };
+
   const hojasOptions = hojas
     .filter((hoja) => {
       const fechaHoy = pedido.fecha;
@@ -277,6 +301,7 @@ export const usePedidoForm = (pedidoId: any) => {
     onEditarPedido,
     onSelectCliente,
     selectedCliente,
+    onActualizarCliente,
     onConfirmarNuevoPedido,
     tiposOptions: tiposPedido.map((tipo) => ({
       value: tipo.tipo_movimiento_id,

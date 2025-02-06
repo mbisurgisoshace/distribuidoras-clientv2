@@ -24,8 +24,14 @@ export interface ICliente {
 }
 
 export interface IClienteView extends ICliente {
+  cliente_id: number;
   zona_id: number | null;
   sub_zona_id: number | null;
   sub_zona_nombre: string | null;
   canal_nombre: string | null;
+  razon_social: string;
+  cuit: string;
+  telefono: string;
+  entre: string;
+  y: string;
 }

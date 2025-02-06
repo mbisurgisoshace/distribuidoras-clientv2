@@ -24,8 +24,6 @@ export default function Form({ clienteId }: FormProps): React.ReactElement {
     'zonas,subzonas,canales,subcanales,condicionesIva,condicionesVenta,listasPrecio,localidades'
   );
 
-  console.log('tablas', tablas);
-
   return (
     <form className="mt-0 sm:mt-3.5 pb-3.5 space-y-6" onSubmit={onSubmit}>
       <InformacionGeneral

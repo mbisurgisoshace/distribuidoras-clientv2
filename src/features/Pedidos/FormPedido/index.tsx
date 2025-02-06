@@ -43,6 +43,7 @@ export default function FormPedido(): React.ReactElement {
     estadosOptions,
     selectedCliente,
     onSelectCliente,
+    onActualizarCliente,
     onConfirmarNuevoPedido,
     condicionesVentaOptions,
   } = usePedidoForm(pedidoId);
@@ -197,7 +198,10 @@ export default function FormPedido(): React.ReactElement {
             </div>
           </div>
           <div className="flex gap-4 flex-col">
-            <DetalleCliente cliente={selectedCliente} />
+            <DetalleCliente
+              cliente={selectedCliente}
+              onActualizarCliente={onActualizarCliente}
+            />
 
             <InfoAdicionalPedido
               pedido={pedido}
