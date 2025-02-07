@@ -1,5 +1,7 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import numeral from 'numeral';
+import moment from 'moment-timezone';
 import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { IClienteView } from '../../../types/Cliente';
 import { useDebounce } from '../../../hooks/useDebounce';
@@ -13,8 +15,7 @@ import { PlusIcon } from '@heroicons/react/solid';
 import Select from '../../../components/Select';
 import Input from '../../../components/Input';
 import Datepicker from '../../../components/Datepicker';
-import moment from 'moment';
-import numeral from 'numeral';
+
 import LoadingData from '../../../components/Table/LoadingData';
 import { usePedidoForm } from './usePedidoForm';
 import DetalleCliente from './DetalleCliente';
@@ -69,6 +70,8 @@ export default function FormPedido(): React.ReactElement {
     }, 0);
   };
 
+  console.log('today', moment().tz('America/Buenos_Aires'));
+
   return (
     <OuterWrapper>
       <div className="flex flex-col h-full">
@@ -91,7 +94,7 @@ export default function FormPedido(): React.ReactElement {
                   value={
                     pedido?.fecha
                       ? moment(pedido.fecha, 'DD-MM-YYYY').toDate()
-                      : new Date()
+                      : moment().tz('America/Buenos_Aires').toDate()
                   }
                   onChange={(date) => {
                     setPedido({

@@ -99,14 +99,29 @@ export default function ActualizarCliente({
                         value={clienteEditable.razon_social || ''}
                       />
 
-                      <Input
-                        id="cuit"
-                        label="CUIT"
-                        name="cuit"
-                        type="text"
-                        onChange={onChangeField}
-                        value={clienteEditable.cuit || ''}
-                      />
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <Input
+                            id="cuit"
+                            label="CUIT"
+                            name="cuit"
+                            type="text"
+                            onChange={onChangeField}
+                            value={clienteEditable.cuit || ''}
+                          />
+                        </div>
+
+                        <div>
+                          <Input
+                            id="telefono"
+                            label="Telefono"
+                            name="telefono"
+                            type="text"
+                            onChange={onChangeField}
+                            value={clienteEditable.telefono || ''}
+                          />
+                        </div>
+                      </div>
 
                       <Input
                         id="calle"
@@ -149,14 +164,6 @@ export default function ActualizarCliente({
                         </div>
                       </div>
 
-                      <Input
-                        id="telefono"
-                        label="Telefono"
-                        name="telefono"
-                        type="text"
-                        onChange={onChangeField}
-                        value={clienteEditable.telefono || ''}
-                      />
                       <button
                         type="submit"
                         //disabled={isLoading}
