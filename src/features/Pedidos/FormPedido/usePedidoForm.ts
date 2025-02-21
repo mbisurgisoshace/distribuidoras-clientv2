@@ -114,7 +114,13 @@ export const usePedidoForm = (pedidoId: any) => {
   };
 
   const onSelectCliente = async (cliente: IClienteView) => {
-    const hojaAsignada = hojas.find((hoja) => hoja.zona_id === cliente.zona_id);
+    const hojaAsignada = hojas
+      .filter((hoja) => {
+        const fechaHoy = pedido.fecha;
+        const fechaHoja = moment(hoja.fecha, 'YYYY-MM-DD').format('DD-MM-YYYY');
+        return fechaHoy === fechaHoja;
+      })
+      .find((hoja) => hoja.zona_id === cliente.zona_id);
 
     const precios = await PrecioService.getPrecios(cliente.lista_precio_id!);
     setPedido({
