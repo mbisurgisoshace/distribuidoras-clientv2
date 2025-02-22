@@ -70,8 +70,6 @@ export default function FormPedido(): React.ReactElement {
     }, 0);
   };
 
-  console.log('today', moment().tz('America/Buenos_Aires'));
-
   return (
     <OuterWrapper>
       <div className="flex flex-col h-full">
@@ -99,6 +97,7 @@ export default function FormPedido(): React.ReactElement {
                   onChange={(date) => {
                     setPedido({
                       ...pedido,
+                      hoja_ruta_id: null,
                       fecha: moment(date).format('DD-MM-YYYY'),
                     });
                   }}
