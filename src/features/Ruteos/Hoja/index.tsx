@@ -23,8 +23,6 @@ export default function Hoja() {
     setPedidos(pedidos);
   };
 
-  console.log('pedidos', pedidos);
-
   return (
     <OuterWrapper>
       <>

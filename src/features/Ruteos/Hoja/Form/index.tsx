@@ -147,7 +147,7 @@ export default function Form({
                   label="Fecha"
                   value={
                     hoja?.fecha
-                      ? moment(hoja.fecha, 'DD-MM-YYYY').toDate()
+                      ? moment(hoja.fecha, 'YYYY-MM-DD').toDate()
                       : moment().tz('America/Buenos_Aires').toDate()
                   }
                   onChange={(date) => {
