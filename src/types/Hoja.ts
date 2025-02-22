@@ -5,6 +5,20 @@ export interface Hoja {
   nombre: string;
   fecha: string;
   zona_id: number;
+  chofer_id: number;
+  acompanante_id: number;
+  camion_id: number;
+  km_inicial: number;
+  km_final: number;
+  gasto_combustible: number;
+  gasto_otro: number;
+  gasto_viatico: number;
+  cobranza: number;
+  cheques: number;
+  efectivo: number;
+  control_stock: boolean;
+  cierre_stock: boolean;
+  estado: boolean;
 }
 
 export interface NewHoja {

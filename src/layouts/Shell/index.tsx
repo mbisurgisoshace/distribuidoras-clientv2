@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from '../../features/Home';
 import Ruteos from '../../features/Ruteos';
 import Login from '../../features/Auth/Login';
+import Hoja from '../../features/Ruteos/Hoja';
 import Clientes from '../../features/Clientes';
 import NewHoja from '../../features/Ruteos/Hoja/NewHoja';
 import FormPedido from '../../features/Pedidos/FormPedido';
@@ -36,6 +37,14 @@ export default function Shell() {
           element={
             <RequireAuth>
               <NewHoja />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/hojas/:hojaId"
+          element={
+            <RequireAuth>
+              <Hoja />
             </RequireAuth>
           }
         />

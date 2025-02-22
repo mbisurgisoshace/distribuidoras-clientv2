@@ -8,6 +8,12 @@ export default class HojasService extends BaseService {
   static hojasSearchRoute = '/hojas/search';
   static hojasByEstadoRoute = '/hojas/estado/{estado}';
 
+  public static async getHoja(id: number): Promise<Hoja> {
+    return await this.getRequest<Hoja>(
+      this.buildRoute(this.hojaRoute, { hojaRutaId: id })
+    );
+  }
+
   public static async getHojasByEstado(estado: number): Promise<Array<Hoja>> {
     return await this.getRequest<Array<Hoja>>(
       this.buildRoute(this.hojasByEstadoRoute, { estado })
@@ -26,6 +32,13 @@ export default class HojasService extends BaseService {
       hojaRuta,
       clientes,
     });
+  }
+
+  public static async updateHojaRuta(id: number, hoja: Hoja): Promise<void> {
+    return await this.putJSONRequest(
+      this.buildRoute(this.hojaRoute, { hojaRutaId: id }),
+      hoja
+    );
   }
 
   public static async borrarHoja(hojaRutaId: number): Promise<any> {

@@ -8,8 +8,6 @@ export interface EstadoMovimiento {
   estado_movimiento_nombre: string;
 }
 
-
-
 export interface Pedido {
   fecha: string;
   movimiento_enc_id?: number;
@@ -22,6 +20,7 @@ export interface Pedido {
   vendio: boolean;
   observaciones: string;
   items: ItemPedido[];
+  motivo_id?: number;
 }
 
 export interface ItemPedido {
